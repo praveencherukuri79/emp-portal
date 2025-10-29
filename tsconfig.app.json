@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.frontend.json",
+  "compilerOptions": {
+    "outDir": "./frontend/dist/out-tsc",
+    "types": []
+  },
+  "files": [
+    "frontend/src/main.ts"
+  ],
+  "include": [
+    "frontend/src/**/*.d.ts",
+    "frontend/src/**/*.ts"
+  ],
+  "exclude": [
+    "frontend/src/**/*.spec.ts",
+    "frontend/src/**/*.test.ts"
+  ]
+}

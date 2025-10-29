@@ -1,0 +1,291 @@
+<div class="reports-dashboard-container">
+  <!-- Header -->
+  <div class="header">
+    <h2>
+      <mat-icon>analytics</mat-icon>
+      Reports & Analytics
+    </h2>
+    <div class="header-actions">
+      <button mat-stroked-button (click)="exportAnalyticsReport()">
+        <mat-icon>download</mat-icon>
+        Export Report
+      </button>
+      <button mat-raised-button color="primary" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="48"></mat-spinner>
+    <p>Loading analytics...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-message" *ngIf="error">
+    <mat-icon>error</mat-icon>
+    <span>{{error}}</span>
+    <button mat-button color="primary" (click)="refresh()" *ngIf="currentUserRole >= 3">
+      <mat-icon>refresh</mat-icon>
+      Retry
+    </button>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard-content" *ngIf="!loading && !error && analytics">
+    
+    <!-- Key Metrics Cards -->
+    <div class="metrics-grid">
+      
+      <!-- Total Employees -->
+      <mat-card class="metric-card employees">
+        <mat-card-content>
+          <div class="metric-icon">
+            <mat-icon>people</mat-icon>
+          </div>
+          <div class="metric-info">
+            <span class="metric-value">{{analytics.totalEmployees}}</span>
+            <span class="metric-label">Total Employees</span>
+          </div>
+          <button mat-icon-button (click)="navigateToUserManagement()" class="metric-action">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Active Projects -->
+      <mat-card class="metric-card projects">
+        <mat-card-content>
+          <div class="metric-icon">
+            <mat-icon>work</mat-icon>
+          </div>
+          <div class="metric-info">
+            <span class="metric-value">{{analytics.activeProjects}}</span>
+            <span class="metric-label">Active Projects</span>
+          </div>
+          <button mat-icon-button (click)="navigateToTimesheetReports()" class="metric-action">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Total Hours This Month -->
+      <mat-card class="metric-card hours">
+        <mat-card-content>
+          <div class="metric-icon">
+            <mat-icon>schedule</mat-icon>
+          </div>
+          <div class="metric-info">
+            <span class="metric-value">{{formatHours(analytics.thisMonth.totalHours)}}</span>
+            <span class="metric-label">Total Hours This Month</span>
+          </div>
+          <button mat-icon-button (click)="navigateToTimesheetReports()" class="metric-action">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Productivity Trend -->
+      <mat-card class="metric-card productivity">
+        <mat-card-content>
+          <div class="metric-icon">
+            <mat-icon [class]="getProductivityColor()">{{getProductivityIcon()}}</mat-icon>
+          </div>
+          <div class="metric-info">
+            <span class="metric-value">{{analytics.thisMonth.productivity.current}}%</span>
+            <span class="metric-label">Productivity</span>
+            <span class="metric-change" [class]="getProductivityColor()">
+              {{getProductivityChange() > 0 ? '+' : ''}}{{getProductivityChange()}}%
+            </span>
+          </div>
+          <button mat-icon-button (click)="navigateToTeamManagement()" class="metric-action">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+    <!-- Pending Approvals Section -->
+    <div class="approvals-section">
+      <mat-card class="approvals-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>pending_actions</mat-icon>
+            Pending Approvals
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="approvals-grid">
+            
+            <div class="approval-item" (click)="navigateToTimesheetReports()">
+              <div class="approval-icon timesheet">
+                <mat-icon>schedule</mat-icon>
+              </div>
+              <div class="approval-info">
+                <span class="approval-count">{{analytics.pendingApprovals.timesheets}}</span>
+                <span class="approval-label">Pending Timesheets</span>
+              </div>
+              <mat-icon class="approval-arrow">chevron_right</mat-icon>
+            </div>
+
+            <div class="approval-item" (click)="navigateToLeaveReports()">
+              <div class="approval-icon leave">
+                <mat-icon>event_available</mat-icon>
+              </div>
+              <div class="approval-info">
+                <span class="approval-count">{{analytics.pendingApprovals.leaves}}</span>
+                <span class="approval-label">Pending Leaves</span>
+              </div>
+              <mat-icon class="approval-arrow">chevron_right</mat-icon>
+            </div>
+
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-grid">
+      
+      <!-- Timesheet Trends -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>show_chart</mat-icon>
+            Timesheet Submission Trends
+          </mat-card-title>
+          <mat-card-subtitle>Last 30 days</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <!-- Chart.js canvas would go here -->
+            <div class="chart-placeholder">
+              <mat-icon>show_chart</mat-icon>
+              <p>Timesheet trends chart will be displayed here</p>
+              <small>Requires Chart.js integration</small>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Leave Trends -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>event_note</mat-icon>
+            Leave Request Trends
+          </mat-card-title>
+          <mat-card-subtitle>Last 30 days</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <div class="chart-placeholder">
+              <mat-icon>event_note</mat-icon>
+              <p>Leave trends chart will be displayed here</p>
+              <small>Requires Chart.js integration</small>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Project Hours Distribution -->
+      <mat-card class="chart-card full-width">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>pie_chart</mat-icon>
+            Project Hours Distribution
+          </mat-card-title>
+          <mat-card-subtitle>Current month breakdown</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="project-hours-content">
+            <div class="chart-container">
+              <div class="chart-placeholder doughnut">
+                <mat-icon>pie_chart</mat-icon>
+                <p>Project distribution chart</p>
+                <small>Requires Chart.js integration</small>
+              </div>
+            </div>
+            <div class="project-legend">
+              <div class="legend-item" *ngFor="let project of analytics.trends.projectHours; let i = index">
+                <div class="legend-color" [style.background-color]="['#2196f3', '#4caf50', '#ff9800', '#f44336'][i]"></div>
+                <div class="legend-info">
+                  <span class="legend-label">{{project.project}}</span>
+                  <span class="legend-value">{{project.hours}}h ({{project.percentage}}%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+    <!-- Top Performer Section -->
+    <div class="performer-section">
+      <mat-card class="performer-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>emoji_events</mat-icon>
+            Top Performer This Month
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="performer-info">
+            <div class="performer-avatar">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div class="performer-details">
+              <h3>{{analytics.thisMonth.topPerformer.name}}</h3>
+              <p>{{formatHours(analytics.thisMonth.topPerformer.hours)}} logged this month</p>
+            </div>
+            <div class="performer-badge">
+              <mat-icon>star</mat-icon>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <mat-card class="actions-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>flash_on</mat-icon>
+            Quick Actions
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="actions-grid">
+            
+            <button mat-raised-button color="primary" (click)="navigateToTimesheetReports()">
+              <mat-icon>schedule</mat-icon>
+              Timesheet Reports
+            </button>
+
+            <button mat-raised-button color="accent" (click)="navigateToLeaveReports()">
+              <mat-icon>event_available</mat-icon>
+              Leave Reports
+            </button>
+
+            <button mat-raised-button (click)="navigateToAttendanceReports()">
+              <mat-icon>fact_check</mat-icon>
+              Attendance Reports
+            </button>
+
+            <button mat-raised-button (click)="navigateToUserManagement()">
+              <mat-icon>people</mat-icon>
+              User Management
+            </button>
+
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+</div>

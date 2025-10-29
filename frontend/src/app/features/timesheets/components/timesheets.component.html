@@ -1,0 +1,234 @@
+<div class="timesheets-container" [attr.data-theme]="currentTheme()">
+  <!-- Header -->
+  <div class="timesheets-header">
+    <div class="header-content">
+      <div class="title-section">
+        <mat-icon class="page-icon">schedule</mat-icon>
+        <div class="title-text">
+          <h1>Timesheets</h1>
+          <p>Track your work hours and manage time entries</p>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button mat-icon-button (click)="refreshData()" class="refresh-button" title="Refresh Data">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        
+        <button mat-raised-button color="primary" (click)="addTimeEntry()" class="add-entry-button">
+          <mat-icon>add</mat-icon>
+          Add Time Entry
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="timesheets-main" [class.loading]="loading">
+    @if (loading) {
+      <div class="loading-container">
+        <mat-spinner diameter="48"></mat-spinner>
+        <p>Loading timesheet data...</p>
+      </div>
+    } @else {
+      <!-- Week Summary Card -->
+      @if (currentWeekSummary) {
+        <div class="week-summary-card">
+          <div class="summary-header">
+            <div class="week-info">
+              <h3>Week of {{ currentWeekSummary.weekStartDate | date:'MMM d' }} - {{ currentWeekSummary.weekEndDate | date:'MMM d, yyyy' }}</h3>
+              <div class="week-status" [attr.data-status]="currentWeekSummary.status">
+                <mat-icon>
+                  @switch (currentWeekSummary.status) {
+                    @case ('draft') { edit }
+                    @case ('submitted') { send }
+                    @case ('approved') { check_circle }
+                    @case ('rejected') { cancel }
+                  }
+                </mat-icon>
+                <span>{{ currentWeekSummary.status | titlecase }}</span>
+              </div>
+            </div>
+            
+            <div class="summary-stats">
+              <div class="stat-item">
+                <mat-icon>schedule</mat-icon>
+                <div class="stat-content">
+                  <span class="stat-value">{{ formatDuration(currentWeekSummary.totalHours) }}</span>
+                  <span class="stat-label">Total Hours</span>
+                </div>
+              </div>
+              
+              <div class="stat-item">
+                <mat-icon>assignment</mat-icon>
+                <div class="stat-content">
+                  <span class="stat-value">{{ weekEntries.length }}</span>
+                  <span class="stat-label">Entries</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          @if (canSubmitTimesheet()) {
+            <div class="summary-actions">
+              <button 
+                mat-raised-button 
+                color="accent" 
+                (click)="submitTimesheet()" 
+                [disabled]="submitting"
+                class="submit-button">
+                @if (submitting) {
+                  <mat-spinner diameter="16"></mat-spinner>
+                } @else {
+                  <mat-icon>send</mat-icon>
+                }
+                Submit Timesheet
+              </button>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Week View Grid -->
+      <div class="week-grid">
+        @for (day of weekDays; track day.dateString) {
+          <div class="day-card" [class.today]="isToday(day.dateString)" [class.past]="isPastDate(day.dateString)">
+            <div class="day-header">
+              <div class="day-info">
+                <span class="day-name">{{ day.dayName }}</span>
+                <span class="day-date">{{ day.date | date:'d' }}</span>
+              </div>
+              
+              @if (day.entry) {
+                <div class="entry-status" [attr.data-status]="day.entry.status">
+                  <span class="status-indicator"></span>
+                  <span class="status-text">{{ getEntryStatus(day.entry).text }}</span>
+                </div>
+              } @else {
+                <button 
+                  mat-icon-button 
+                  (click)="addTimeEntry(day.dateString)" 
+                  class="add-day-entry"
+                  title="Add time entry for this day">
+                  <mat-icon>add</mat-icon>
+                </button>
+              }
+            </div>
+            
+            <div class="day-content">
+              @if (day.entry) {
+                <div class="time-entry" (click)="editTimeEntry(day.entry)">
+                  <div class="entry-time">
+                    <mat-icon>schedule</mat-icon>
+                    <span>{{ day.entry.startTime }} - {{ day.entry.endTime }}</span>
+                    <span class="entry-duration">({{ formatDuration(day.entry.totalHours) }})</span>
+                  </div>
+                  
+                  <div class="entry-project">
+                    <mat-icon>work</mat-icon>
+                    <span>{{ day.entry.projectName || 'No Project' }}</span>
+                  </div>
+                  
+                  @if (day.entry.description) {
+                    <div class="entry-description">
+                      <mat-icon>notes</mat-icon>
+                      <span>{{ day.entry.description }}</span>
+                    </div>
+                  }
+                  
+                  @if (canEditEntry(day.entry)) {
+                    <div class="entry-actions">
+                      <button 
+                        mat-icon-button 
+                        (click)="$event.stopPropagation(); editTimeEntry(day.entry)"
+                        title="Edit entry"
+                        class="edit-button">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      
+                      <button 
+                        mat-icon-button 
+                        (click)="$event.stopPropagation(); deleteTimeEntry(day.entry)"
+                        title="Delete entry"
+                        class="delete-button">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <div class="empty-day">
+                  <mat-icon>add_circle_outline</mat-icon>
+                  <span>No time logged</span>
+                  <button 
+                    mat-button 
+                    (click)="addTimeEntry(day.dateString)" 
+                    class="add-entry-link">
+                    Add Entry
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Recent Entries -->
+      @if (weekEntries.length > 0) {
+        <div class="recent-entries-card">
+          <div class="card-header">
+            <mat-icon>history</mat-icon>
+            <h3>Recent Entries</h3>
+          </div>
+          
+          <div class="entries-list">
+            @for (entry of weekEntries; track entry.id) {
+              <div class="entry-item" (click)="editTimeEntry(entry)">
+                <div class="entry-main">
+                  <div class="entry-date">
+                    <mat-icon>event</mat-icon>
+                    <span>{{ entry.date | date:'EEE, MMM d' }}</span>
+                  </div>
+                  
+                  <div class="entry-details">
+                    <div class="entry-time-info">
+                      <mat-icon>schedule</mat-icon>
+                      <span>{{ entry.startTime }} - {{ entry.endTime }}</span>
+                      <span class="entry-hours">({{ formatDuration(entry.totalHours) }})</span>
+                    </div>
+                    
+                    <div class="entry-project-info">
+                      <mat-icon>work</mat-icon>
+                      <span>{{ entry.projectName || 'No Project' }}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="entry-status-badge" [attr.data-status]="entry.status">
+                  {{ getEntryStatus(entry).text }}
+                </div>
+                
+                @if (canEditEntry(entry)) {
+                  <div class="entry-quick-actions">
+                    <button 
+                      mat-icon-button 
+                      (click)="$event.stopPropagation(); editTimeEntry(entry)"
+                      title="Edit">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button 
+                      mat-icon-button 
+                      (click)="$event.stopPropagation(); deleteTimeEntry(entry)"
+                      title="Delete">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

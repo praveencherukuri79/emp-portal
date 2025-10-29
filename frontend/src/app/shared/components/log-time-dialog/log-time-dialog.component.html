@@ -1,0 +1,91 @@
+<div class="log-time-dialog">
+  <h2 mat-dialog-title>
+    <mat-icon>schedule</mat-icon>
+    <span>Log Time</span>
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="form">
+      <!-- Week Selector -->
+      <div class="week-selector">
+        <button mat-icon-button type="button" (click)="previousWeek()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <div class="week-info">
+          <span class="week-label">Week of {{ weekStart | date:'MMM d' }} - {{ weekEnd | date:'MMM d, y' }}</span>
+        </div>
+        <button mat-icon-button type="button" (click)="nextWeek()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+        <button mat-button type="button" (click)="goToCurrentWeek()" class="today-btn">
+          Today
+        </button>
+      </div>
+
+      <!-- Project Selection -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Project</mat-label>
+        <mat-select formControlName="project">
+          @for (project of projects; track project) {
+            <mat-option [value]="project">{{ project }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Weekly Time Grid -->
+      <div class="time-grid">
+        <div class="grid-header">
+          <span class="day-label">Day</span>
+          <span class="hours-label">Hours</span>
+        </div>
+        
+        @for (day of weekDays; track day.date) {
+          <div class="day-row" [class.today]="isToday(day.date)" [class.weekend]="day.isWeekend">
+            <div class="day-info">
+              <span class="day-name">{{ day.name }}</span>
+              <span class="day-date">{{ day.date | date:'MMM d' }}</span>
+            </div>
+            <div class="hours-input">
+              <mat-form-field appearance="outline" class="hours-field">
+                <input matInput 
+                       type="number" 
+                       [formControlName]="'day' + day.index"
+                       min="0" 
+                       max="24" 
+                       step="0.5"
+                       placeholder="0">
+              </mat-form-field>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Total Hours -->
+      <div class="total-hours">
+        <span>Total Hours</span>
+        <span class="total-value">{{ totalHours | number:'1.1-1' }}h</span>
+      </div>
+
+      <!-- Description -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description (optional)</mat-label>
+        <textarea matInput 
+                  formControlName="description" 
+                  rows="2"
+                  placeholder="What did you work on this week?"></textarea>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button type="button" (click)="onCancel()" [disabled]="isSubmitting">Cancel</button>
+    <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="!form.valid || totalHours === 0 || isSubmitting">
+      @if (isSubmitting) {
+        <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
+        Saving...
+      } @else {
+        Save Timesheet
+      }
+    </button>
+  </mat-dialog-actions>
+</div>

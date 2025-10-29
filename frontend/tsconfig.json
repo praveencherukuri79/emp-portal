@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.frontend.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@core/*": ["src/app/core/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@features/*": ["src/app/features/*"],
+      "@env/*": ["src/environments/*"],
+      "@assets/*": ["src/assets/*"]
+    }
+  }
+}

@@ -1,0 +1,295 @@
+<div class="dashboard-container" [attr.data-theme]="currentTheme()">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <mat-icon>business</mat-icon>
+        </div>
+        <h1 class="brand-title">Employer Portal</h1>
+      </div>
+      
+      <div class="header-actions">
+        <button mat-icon-button [matMenuTriggerFor]="themeMenu" class="theme-button" title="Change Theme">
+          <mat-icon>palette</mat-icon>
+        </button>
+        
+        <mat-menu #themeMenu="matMenu">
+          <button mat-menu-item (click)="changeTheme('light')">
+            <mat-icon>light_mode</mat-icon>
+            <span>Light</span>
+          </button>
+          <button mat-menu-item (click)="changeTheme('dark')">
+            <mat-icon>dark_mode</mat-icon>
+            <span>Dark</span>
+          </button>
+          <button mat-menu-item (click)="changeTheme('corporate')">
+            <mat-icon>business</mat-icon>
+            <span>Corporate</span>
+          </button>
+        </mat-menu>
+        
+        <button mat-icon-button (click)="refreshDashboard()" class="refresh-button" title="Refresh Dashboard">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        
+        <button mat-icon-button (click)="navigateToNotifications()" class="notifications-button" title="Notifications">
+          <mat-icon [matBadge]="dashboardStats?.unreadNotifications || 0" matBadgeColor="warn" [matBadgeHidden]="!dashboardStats?.unreadNotifications">
+            notifications
+          </mat-icon>
+        </button>
+
+        @if (currentUser) {
+          <div class="user-menu">
+            <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+              <div class="user-avatar">
+                <mat-icon>account_circle</mat-icon>
+              </div>
+              <div class="user-info">
+                <span class="user-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
+                <span class="user-role">{{ currentUser.role }}</span>
+              </div>
+              <mat-icon class="dropdown-icon">expand_more</mat-icon>
+            </button>
+            
+            <mat-menu #userMenu="matMenu" class="user-dropdown">
+              <button mat-menu-item>
+                <mat-icon>person</mat-icon>
+                <span>Profile</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>settings</mat-icon>
+                <span>Settings</span>
+              </button>
+              <mat-divider></mat-divider>
+              <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+              </button>
+            </mat-menu>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="dashboard-main" [class.loading]="loading">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <div class="welcome-content">
+        <h2 class="welcome-greeting">{{ getGreeting() }}{{ currentUser ? ', ' + currentUser.firstName : '' }}!</h2>
+        <p class="welcome-subtitle" *ngIf="isEmployer()">Here's your business overview and team insights</p>
+        <p class="welcome-subtitle" *ngIf="isEmployee()">Here's what's happening with your work today</p>
+      </div>
+      <div class="welcome-stats">
+        @if (dashboardStats) {
+          <div class="stat-item">
+            <div class="stat-icon">
+              <mat-icon>schedule</mat-icon>
+            </div>
+            <div class="stat-content">
+              <span class="stat-value">{{ dashboardStats.hoursWorked || 0 }}h</span>
+              <span class="stat-label">This Month</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">
+              <mat-icon>event_available</mat-icon>
+            </div>
+            <div class="stat-content">
+              <span class="stat-value">{{ dashboardStats.leaveBalance || 0 }}</span>
+              <span class="stat-label">Leave Balance</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">
+              <mat-icon>pending_actions</mat-icon>
+            </div>
+            <div class="stat-content">
+              <span class="stat-value">{{ dashboardStats.pendingTimesheets || 0 }}</span>
+              <span class="stat-label">Pending Timesheets</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Quick Actions Card -->
+      <div class="dashboard-card quick-actions-card">
+        <div class="card-header">
+          <mat-icon>bolt</mat-icon>
+          <h3>Quick Actions</h3>
+        </div>
+        <div class="card-content">
+          <!-- EMPLOYER ACTIONS -->
+          <div class="action-grid" *ngIf="isEmployer()">
+            <button mat-stroked-button class="action-item" (click)="navigateToTeamManagement()">
+              <mat-icon>groups</mat-icon>
+              <div class="action-content">
+                <span class="action-title">Team Management</span>
+                <span class="action-subtitle">Manage your team</span>
+              </div>
+            </button>
+            
+            <button mat-stroked-button class="action-item" (click)="navigateToUserManagement()">
+              <mat-icon>people</mat-icon>
+              <div class="action-content">
+                <span class="action-title">User Management</span>
+                <span class="action-subtitle">Manage all users</span>
+              </div>
+            </button>
+            
+            <button mat-stroked-button class="action-item" (click)="navigateToReports()">
+              <mat-icon>analytics</mat-icon>
+              <div class="action-content">
+                <span class="action-title">Reports & Analytics</span>
+                <span class="action-subtitle">View business insights</span>
+              </div>
+            </button>
+
+            <button mat-stroked-button class="action-item" (click)="navigateToApprovals()">
+              <mat-icon>approval</mat-icon>
+              <div class="action-content">
+                <span class="action-title">Approvals</span>
+                <span class="action-subtitle">Review pending items</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- EMPLOYEE ACTIONS -->
+          <div class="action-grid" *ngIf="isEmployee()">
+            <button mat-stroked-button class="action-item" (click)="openLogTimeDialog()">
+              <mat-icon>schedule</mat-icon>
+              <div class="action-content">
+                <span class="action-title">Log Time</span>
+                <span class="action-subtitle">Track your hours</span>
+              </div>
+            </button>
+            
+            <button mat-stroked-button class="action-item" (click)="openLeaveRequestDialog()">
+              <mat-icon>event_available</mat-icon>
+              <div class="action-content">
+                <span class="action-title">Request Leave</span>
+                <span class="action-subtitle">Plan your time off</span>
+              </div>
+            </button>
+            
+            <button mat-stroked-button class="action-item" (click)="openDocumentUploadDialog()">
+              <mat-icon>cloud_upload</mat-icon>
+              <div class="action-content">
+                <span class="action-title">Upload Document</span>
+                <span class="action-subtitle">Share files securely</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Overview Card -->
+      <div class="dashboard-card stats-card">
+        <div class="card-header">
+          <mat-icon>analytics</mat-icon>
+          <h3>This Month</h3>
+        </div>
+        <div class="card-content">
+          @if (dashboardStats) {
+            <div class="stats-grid">
+              <div class="stat-box">
+                <mat-icon class="stat-icon hours">schedule</mat-icon>
+                <div class="stat-details">
+                  <span class="stat-number">{{ dashboardStats.hoursWorked || 0 }}h</span>
+                  <span class="stat-description">Total Hours</span>
+                </div>
+              </div>
+              
+              <div class="stat-box">
+                <mat-icon class="stat-icon timesheets">assignment</mat-icon>
+                <div class="stat-details">
+                  <span class="stat-number">{{ dashboardStats.pendingTimesheets || 0 }}</span>
+                  <span class="stat-description">Pending Timesheets</span>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="loading-placeholder">
+              <mat-spinner diameter="24"></mat-spinner>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Recent Activity Card -->
+      <div class="dashboard-card activity-card">
+        <div class="card-header">
+          <mat-icon>history</mat-icon>
+          <h3>Recent Activity</h3>
+        </div>
+        <div class="card-content">
+          @if (recentActivity.length > 0) {
+            <div class="activity-list">
+              @for (activity of recentActivity; track activity.id) {
+                <div class="activity-item" (click)="onActivityClick(activity)">
+                  <mat-icon class="activity-icon" [attr.data-type]="activity.type">
+                    @switch (activity.type) {
+                      @case ('timesheet') { schedule }
+                      @case ('leave') { event_available }
+                      @case ('document') { description }
+                      @default { notifications }
+                    }
+                  </mat-icon>
+                  <div class="activity-content">
+                    <span class="activity-title">{{ activity.title }}</span>
+                    <span class="activity-description">{{ activity.description }}</span>
+                    <span class="activity-time">{{ formatRelativeTime(activity.timestamp) }}</span>
+                  </div>
+                  @if (activity.status) {
+                    <span class="activity-status" [attr.data-status]="activity.status">
+                      {{ activity.status }}
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="empty-state">
+              <mat-icon>inbox</mat-icon>
+              <span>No recent activity</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Upcoming Deadlines Card -->
+      <div class="dashboard-card deadlines-card">
+        <div class="card-header">
+          <mat-icon>alarm</mat-icon>
+          <h3>Upcoming Deadlines</h3>
+        </div>
+        <div class="card-content">
+          @if (upcomingDeadlines.length > 0) {
+            <div class="deadlines-list">
+              @for (deadline of upcomingDeadlines; track deadline.id) {
+                <div class="deadline-item" (click)="onActivityClick(deadline)">
+                  <div class="deadline-indicator"></div>
+                  <div class="deadline-content">
+                    <span class="deadline-title">{{ deadline.title }}</span>
+                    <span class="deadline-description">{{ deadline.description }}</span>
+                    <span class="deadline-time">{{ formatDisplayTime(deadline.timestamp) }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="empty-state">
+              <mat-icon>check_circle</mat-icon>
+              <span>No upcoming deadlines</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

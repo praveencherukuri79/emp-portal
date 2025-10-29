@@ -1,0 +1,346 @@
+<div class="user-form-container">
+  <!-- Header -->
+  <div class="header">
+    <button mat-icon-button (click)="onCancel()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>
+      <mat-icon>{{isEditMode ? 'edit' : 'person_add'}}</mat-icon>
+      {{isEditMode ? 'Edit User' : 'Create New User'}}
+    </h2>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="48"></mat-spinner>
+    <p>Loading user details...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="error">
+    <mat-icon>error</mat-icon>
+    <span>{{error}}</span>
+    <button mat-button color="primary" (click)="onReset()">
+      <mat-icon>refresh</mat-icon>
+      Retry
+    </button>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" *ngIf="!loading" class="user-form">
+    
+    <!-- Basic Information Section -->
+    <mat-card class="form-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>person</mat-icon>
+          Basic Information
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-grid">
+          
+          <!-- First Name -->
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput 
+                   formControlName="firstName" 
+                   placeholder="Enter first name"
+                   [class.is-invalid]="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
+            <mat-error *ngIf="getFieldError('firstName')">
+              {{getFieldError('firstName')}}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Last Name -->
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput 
+                   formControlName="lastName" 
+                   placeholder="Enter last name"
+                   [class.is-invalid]="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
+            <mat-error *ngIf="getFieldError('lastName')">
+              {{getFieldError('lastName')}}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Email -->
+          <mat-form-field appearance="outline">
+            <mat-label>Email Address</mat-label>
+            <input matInput 
+                   type="email"
+                   formControlName="email" 
+                   placeholder="user@company.com"
+                   [class.is-invalid]="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="getFieldError('email')">
+              {{getFieldError('email')}}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Password (only for new users) -->
+          <mat-form-field appearance="outline" *ngIf="!isEditMode">
+            <mat-label>Password</mat-label>
+            <input matInput 
+                   type="password"
+                   formControlName="password" 
+                   placeholder="Enter secure password"
+                   [class.is-invalid]="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+            <mat-icon matSuffix>lock</mat-icon>
+            <mat-error *ngIf="getFieldError('password')">
+              {{getFieldError('password')}}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Phone -->
+          <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput 
+                   type="tel"
+                   formControlName="phone" 
+                   placeholder="+1 (555) 123-4567">
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+
+          <!-- Date of Birth -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput 
+                   type="date"
+                   formControlName="dateOfBirth">
+            <mat-icon matSuffix>cake</mat-icon>
+          </mat-form-field>
+
+          <!-- Role -->
+          <mat-form-field appearance="outline">
+            <mat-label>Role</mat-label>
+            <mat-select formControlName="role" [disabled]="!canEditRole()">
+              <mat-option *ngFor="let role of roles" [value]="role.value">
+                {{role.label}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>badge</mat-icon>
+          </mat-form-field>
+
+          <!-- Status -->
+          <div class="status-field" *ngIf="isEditMode">
+            <mat-slide-toggle 
+              formControlName="isActive"
+              [disabled]="!canEditRole()">
+              {{userForm.get('isActive')?.value ? 'Active' : 'Inactive'}}
+            </mat-slide-toggle>
+          </div>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Address Information Section -->
+    <mat-card class="form-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>home</mat-icon>
+          Address Information
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div formGroupName="address" class="form-grid">
+          
+          <!-- Street -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Street Address</mat-label>
+            <input matInput 
+                   formControlName="street" 
+                   placeholder="123 Main Street">
+          </mat-form-field>
+
+          <!-- City -->
+          <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <input matInput 
+                   formControlName="city" 
+                   placeholder="New York">
+          </mat-form-field>
+
+          <!-- State -->
+          <mat-form-field appearance="outline">
+            <mat-label>State</mat-label>
+            <input matInput 
+                   formControlName="state" 
+                   placeholder="NY">
+          </mat-form-field>
+
+          <!-- Zip Code -->
+          <mat-form-field appearance="outline">
+            <mat-label>Zip Code</mat-label>
+            <input matInput 
+                   formControlName="zipCode" 
+                   placeholder="12345">
+          </mat-form-field>
+
+          <!-- Country -->
+          <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <input matInput 
+                   formControlName="country" 
+                   placeholder="United States">
+          </mat-form-field>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Employee Information Section -->
+    <mat-card class="form-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>work</mat-icon>
+          Employment Details
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div formGroupName="employeeInfo" class="form-grid">
+          
+          <!-- Employee ID -->
+          <mat-form-field appearance="outline">
+            <mat-label>Employee ID</mat-label>
+            <input matInput 
+                   formControlName="employeeId" 
+                   placeholder="EMP001">
+          </mat-form-field>
+
+          <!-- Department -->
+          <mat-form-field appearance="outline">
+            <mat-label>Department</mat-label>
+            <mat-select formControlName="department">
+              <mat-option value="">Select Department</mat-option>
+              <mat-option *ngFor="let dept of departments" [value]="dept">
+                {{dept}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Designation -->
+          <mat-form-field appearance="outline">
+            <mat-label>Designation</mat-label>
+            <input matInput 
+                   formControlName="designation" 
+                   placeholder="Software Engineer">
+          </mat-form-field>
+
+          <!-- Joining Date -->
+          <mat-form-field appearance="outline">
+            <mat-label>Joining Date</mat-label>
+            <input matInput 
+                   type="date"
+                   formControlName="joiningDate">
+          </mat-form-field>
+
+          <!-- Employment Type -->
+          <mat-form-field appearance="outline">
+            <mat-label>Employment Type</mat-label>
+            <mat-select formControlName="employmentType">
+              <mat-option *ngFor="let type of employmentTypes" [value]="type.value">
+                {{type.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Salary -->
+          <mat-form-field appearance="outline" *ngIf="canEditSalary()">
+            <mat-label>Annual Salary</mat-label>
+            <input matInput 
+                   type="number"
+                   formControlName="salary" 
+                   placeholder="0"
+                   [class.is-invalid]="userForm.get('employeeInfo.salary')?.invalid && userForm.get('employeeInfo.salary')?.touched">
+            <span matPrefix>$ </span>
+            <mat-error *ngIf="getFieldError('salary', 'employeeInfo')">
+              {{getFieldError('salary', 'employeeInfo')}}
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Visa Information Section -->
+    <mat-card class="form-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>flight</mat-icon>
+          Visa Information
+        </mat-card-title>
+        <mat-card-subtitle>Optional - for international employees</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div formGroupName="visaInfo" class="form-grid">
+          
+          <!-- Visa Type -->
+          <mat-form-field appearance="outline">
+            <mat-label>Visa Type</mat-label>
+            <input matInput 
+                   formControlName="type" 
+                   placeholder="H1B, L1, etc.">
+          </mat-form-field>
+
+          <!-- Visa Number -->
+          <mat-form-field appearance="outline">
+            <mat-label>Visa Number</mat-label>
+            <input matInput 
+                   formControlName="number" 
+                   placeholder="Visa identification number">
+          </mat-form-field>
+
+          <!-- Expiry Date -->
+          <mat-form-field appearance="outline">
+            <mat-label>Expiry Date</mat-label>
+            <input matInput 
+                   type="date"
+                   formControlName="expiryDate">
+          </mat-form-field>
+
+          <!-- Visa Status -->
+          <mat-form-field appearance="outline">
+            <mat-label>Visa Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let status of visaStatuses" [value]="status.value">
+                {{status.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button mat-button 
+              type="button" 
+              (click)="onCancel()"
+              [disabled]="saving">
+        Cancel
+      </button>
+      
+      <button mat-stroked-button 
+              type="button" 
+              (click)="onReset()"
+              [disabled]="saving">
+        <mat-icon>refresh</mat-icon>
+        Reset
+      </button>
+      
+      <button mat-raised-button 
+              type="submit" 
+              color="primary"
+              [disabled]="userForm.invalid || saving">
+        <mat-spinner diameter="20" *ngIf="saving"></mat-spinner>
+        <mat-icon *ngIf="!saving">{{isEditMode ? 'save' : 'person_add'}}</mat-icon>
+        {{saving ? 'Saving...' : (isEditMode ? 'Update User' : 'Create User')}}
+      </button>
+    </div>
+
+  </form>
+</div>

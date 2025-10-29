@@ -1,0 +1,90 @@
+<div class="login-container" [attr.data-theme]="currentTheme()">
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" (click)="toggleTheme()" type="button" title="Toggle theme">
+    <img *ngIf="!isDark()" src="/assets/svg/sun.svg" alt="Light mode" class="theme-icon">
+    <img *ngIf="isDark()" src="/assets/svg/moon.svg" alt="Dark mode" class="theme-icon">
+  </button>
+
+  <!-- Background Decoration -->
+  <div class="background-decoration">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Login Card -->
+  <div class="login-card">
+    <!-- Header -->
+    <div class="card-header">
+      <div class="logo">
+        <img src="/assets/svg/user.svg" alt="Logo" class="logo-icon">
+      </div>
+      <h1 class="title">{{ msg.title }}</h1>
+      <p class="subtitle">{{ msg.subtitle }}</p>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" novalidate>
+
+      <!-- Email Field -->
+      <div class="form-group" [class.has-error]="emailError()" [class.has-value]="loginForm.get('email')?.value">
+        <label for="email" class="form-label">
+          {{ msg.emailLabel }}*
+        </label>
+        <div class="input-wrapper">
+          <img src="/assets/svg/mail.svg" alt="" class="input-icon">
+          <input id="email" type="email" class="form-input" formControlName="email" [placeholder]="msg.emailPlaceholder"
+            autocomplete="email" (focus)="onFieldFocus('email')" (blur)="onFieldBlur('email')" />
+        </div>
+        <span class="error-message" *ngIf="emailError()">
+          {{ emailError() }}
+        </span>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group" [class.has-error]="passwordError()" [class.has-value]="loginForm.get('password')?.value">
+        <label for="password" class="form-label">
+          {{ msg.passwordLabel }}*
+        </label>
+        <div class="input-wrapper">
+          <img src="/assets/svg/lock.svg" alt="" class="input-icon">
+          <input id="password" [type]="hidePassword() ? 'password' : 'text'" class="form-input"
+            formControlName="password" [placeholder]="msg.passwordPlaceholder" autocomplete="current-password"
+            (focus)="onFieldFocus('password')" (blur)="onFieldBlur('password')" />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()"
+            [title]="hidePassword() ? 'Show password' : 'Hide password'">
+            <img *ngIf="hidePassword()" src="/assets/svg/eye.svg" alt="Show" class="eye-icon">
+            <img *ngIf="!hidePassword()" src="/assets/svg/eye-off.svg" alt="Hide" class="eye-icon">
+          </button>
+        </div>
+        <span class="error-message" *ngIf="passwordError()">
+          {{ passwordError() }}
+        </span>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn" [class.loading]="loading()" [disabled]="loading()">
+        <span class="btn-spinner" *ngIf="loading()">
+          <span class="spinner"></span>
+        </span>
+        <span class="btn-text" *ngIf="!loading()">
+          {{ msg.submit }}
+          <img src="/assets/svg/arrow-right.svg" alt="" class="btn-arrow">
+        </span>
+      </button>
+
+      <!-- Forgot Password -->
+      <div class="forgot-password">
+        <a href="#" class="forgot-link">{{ msg.forgotPassword }}</a>
+      </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="card-footer">
+      <p class="footer-text">
+        {{ msg.noAccount }}
+        <a routerLink="/auth/signup" class="signup-link">{{ msg.signUp }}</a>
+      </p>
+    </div>
+  </div>
+</div>

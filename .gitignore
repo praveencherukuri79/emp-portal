@@ -1,0 +1,221 @@
+# ================================================
+# UNIFIED GITIGNORE FOR EMPLOYEE PORTAL
+# ================================================
+
+# ================================================
+# NODE.JS & NPM
+# ================================================
+# Dependencies
+node_modules/
+*/node_modules/
+jspm_packages/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# ================================================
+# BUILD OUTPUTS
+# ================================================
+# Compiled output
+dist/
+*/dist/
+build/
+*/build/
+out/
+*/out/
+out-tsc/
+*/out-tsc/
+tmp/
+temp/
+
+# Only exists if Bazel was run
+/bazel-out
+
+# TypeScript cache
+*.tsbuildinfo
+
+# ================================================
+# ENVIRONMENT VARIABLES
+# ================================================
+# dotenv environment variables file
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+frontend/.env
+
+# ================================================
+# TESTING & COVERAGE
+# ================================================
+# Coverage directory used by tools like istanbul
+coverage/
+*/coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Jest
+jest-results.xml
+
+# ================================================
+# CACHING & TEMPORARY FILES
+# ================================================
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Angular cache
+.angular/cache
+.angular/
+*/.angular/
+
+# Sass cache
+.sass-cache/
+*/.sass-cache/
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+
+# Gatsby files
+.cache/
+public
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# ================================================
+# IDEs AND EDITORS
+# ================================================
+# IDEs and editors
+.idea/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Vim
+*.swp
+*.swo
+*~
+
+# ================================================
+# SYSTEM FILES
+# ================================================
+# System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac OSX
+.AppleDouble
+.LSOverride
+
+# ================================================
+# APPLICATION SPECIFIC
+# ================================================
+# File uploads
+uploads/
+*/uploads/
+upload/
+*/upload/
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Certificate files
+*.pem
+*.key
+*.crt
+*.cert
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+
+# ================================================
+# ANGULAR SPECIFIC
+# ================================================
+# Angular CLI
+.angular/
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# ================================================
+# EXPRESS/NODE BACKEND SPECIFIC
+# ================================================
+# PM2 logs
+logs/
+*.log
+
+# SSL certificates
+ssl/
+
+# Sessions
+sessions/

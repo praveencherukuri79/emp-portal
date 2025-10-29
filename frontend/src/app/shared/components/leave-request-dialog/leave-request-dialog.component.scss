@@ -1,0 +1,34 @@
+@import 'styles/mixins';
+
+// Leave request dialog - NO IMPORTS
+.leave-request-dialog {
+  padding: var(--spacing-lg);
+  
+  .form-group {
+    margin-bottom: var(--spacing-lg);
+    
+    label {
+      display: block;
+      margin-bottom: var(--spacing-xs);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    
+    input, select, textarea {
+      @include input-base;
+    }
+  }
+  
+  .date-range {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+    margin-top: var(--spacing-xl);
+  }
+}

@@ -1,0 +1,28 @@
+@import 'styles/mixins';
+
+// Log time dialog - NO IMPORTS
+.log-time-dialog {
+  padding: var(--spacing-lg);
+  
+  .form-group {
+    margin-bottom: var(--spacing-lg);
+    
+    label {
+      display: block;
+      margin-bottom: var(--spacing-xs);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    
+    input, select, textarea {
+      @include input-base;
+    }
+  }
+  
+  .actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+    margin-top: var(--spacing-xl);
+  }
+}

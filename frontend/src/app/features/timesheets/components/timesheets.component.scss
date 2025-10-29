@@ -1,0 +1,372 @@
+@import 'styles/mixins';
+
+.timesheets {
+  @include container;
+  padding: var(--spacing-xl);
+  
+  // Header
+  .header {
+    @include flex-between;
+    margin-bottom: var(--spacing-2xl);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    
+    .header-content {
+      h1 {
+        font-size: var(--text-3xl);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 var(--spacing-xs) 0;
+      }
+      
+      .subtitle {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+      }
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: center;
+      flex-wrap: wrap;
+      
+      .week-selector {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-xs);
+        background: var(--surface-secondary);
+        border-radius: var(--radius-md);
+        
+        button {
+          width: 32px;
+          height: 32px;
+          border: none;
+          background: transparent;
+          border-radius: var(--radius-sm);
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+          
+          &:hover {
+            background: var(--surface-elevated);
+          }
+        }
+        
+        .current-week {
+          padding: 0 var(--spacing-md);
+          font-size: var(--text-sm);
+          font-weight: 500;
+          color: var(--text-primary);
+          min-width: 150px;
+          text-align: center;
+        }
+      }
+    }
+  }
+  
+  // Summary Cards
+  .summary-cards {
+    @include grid-responsive(4, 2, 1);
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+  }
+  
+  .summary-card {
+    @include card-base;
+    padding: var(--spacing-lg);
+    
+    .card-label {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .card-value {
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: var(--text-primary);
+      
+      &.primary { color: var(--primary-600); }
+      &.success { color: var(--success-600); }
+      &.warning { color: var(--warning-600); }
+    }
+    
+    .card-target {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      margin-top: var(--spacing-xs);
+    }
+  }
+  
+  // Timesheet Grid
+  .timesheet-grid {
+    @include card-base;
+    padding: 0;
+    overflow: hidden;
+    
+    // Grid Header
+    .grid-header {
+      background: var(--surface-secondary);
+      padding: var(--spacing-lg);
+      border-bottom: 1px solid var(--border-light);
+      
+      @include flex-between;
+      
+      .view-options {
+        display: flex;
+        gap: var(--spacing-sm);
+        
+        button {
+          padding: var(--spacing-xs) var(--spacing-md);
+          border: 1px solid var(--border-light);
+          background: var(--background-primary);
+          border-radius: var(--radius-md);
+          font-size: var(--text-sm);
+          cursor: pointer;
+          transition: all 0.2s ease;
+          
+          &.active {
+            background: var(--primary-600);
+            color: white;
+            border-color: var(--primary-600);
+          }
+          
+          &:hover:not(.active) {
+            background: var(--surface-elevated);
+          }
+        }
+      }
+    }
+    
+    // Week Days Header
+    .week-header {
+      display: grid;
+      grid-template-columns: 200px repeat(7, 1fr) 120px;
+      background: var(--surface-elevated);
+      border-bottom: 2px solid var(--border-light);
+      
+      .day-cell {
+        padding: var(--spacing-md);
+        text-align: center;
+        font-size: var(--text-sm);
+        font-weight: 600;
+        color: var(--text-primary);
+        
+        &.project-col {
+          text-align: left;
+        }
+        
+        &.total-col {
+          text-align: right;
+        }
+        
+        &.today {
+          background: var(--primary-50);
+          color: var(--primary-700);
+        }
+        
+        .day-date {
+          font-size: var(--text-xs);
+          color: var(--text-secondary);
+          font-weight: 400;
+          margin-top: var(--spacing-xs);
+        }
+      }
+    }
+    
+    // Timesheet Rows
+    .timesheet-body {
+      .timesheet-row {
+        display: grid;
+        grid-template-columns: 200px repeat(7, 1fr) 120px;
+        border-bottom: 1px solid var(--border-light);
+        transition: background-color 0.2s ease;
+        
+        &:hover {
+          background-color: var(--surface-secondary);
+        }
+        
+        .project-cell {
+          padding: var(--spacing-md);
+          display: flex;
+          align-items: center;
+          gap: var(--spacing-sm);
+          
+          .project-color {
+            width: 4px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+          }
+          
+          .project-info {
+            .project-name {
+              font-size: var(--text-sm);
+              font-weight: 500;
+              color: var(--text-primary);
+            }
+            
+            .task-name {
+              font-size: var(--text-xs);
+              color: var(--text-secondary);
+            }
+          }
+        }
+        
+        .hour-cell {
+          padding: var(--spacing-sm);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          input {
+            width: 100%;
+            max-width: 80px;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            text-align: center;
+            font-size: var(--text-sm);
+            background: var(--background-primary);
+            transition: all 0.2s ease;
+            
+            &:focus {
+              outline: none;
+              border-color: var(--primary-500);
+              box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+            }
+            
+            &.has-value {
+              background: var(--success-50);
+              border-color: var(--success-300);
+              font-weight: 500;
+            }
+          }
+        }
+        
+        .total-cell {
+          padding: var(--spacing-md);
+          text-align: right;
+          font-weight: 600;
+          color: var(--text-primary);
+          background: var(--surface-secondary);
+        }
+      }
+    }
+    
+    // Grid Footer
+    .grid-footer {
+      background: var(--surface-elevated);
+      padding: var(--spacing-lg);
+      border-top: 2px solid var(--border-light);
+      
+      @include flex-between;
+      
+      .total-hours {
+        font-size: var(--text-lg);
+        font-weight: 600;
+        color: var(--text-primary);
+        
+        span {
+          color: var(--primary-600);
+        }
+      }
+      
+      .actions {
+        display: flex;
+        gap: var(--spacing-md);
+        
+        button {
+          padding: var(--spacing-sm) var(--spacing-lg);
+          border-radius: var(--radius-md);
+          font-size: var(--text-sm);
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          
+          &.btn-primary {
+            background: var(--primary-600);
+            color: white;
+            border: none;
+            
+            &:hover {
+              background: var(--primary-700);
+            }
+          }
+          
+          &.btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+            
+            &:hover {
+              background: var(--surface-secondary);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // Quick Add Section
+  .quick-add {
+    @include card-base;
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    
+    .quick-add-form {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr auto;
+      gap: var(--spacing-md);
+      align-items: end;
+      
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        
+        label {
+          font-size: var(--text-sm);
+          font-weight: 500;
+          color: var(--text-secondary);
+        }
+        
+        select, input {
+          padding: var(--spacing-sm) var(--spacing-md);
+          border: 1px solid var(--border-light);
+          border-radius: var(--radius-md);
+          font-size: var(--text-sm);
+          background: var(--background-primary);
+          
+          &:focus {
+            outline: none;
+            border-color: var(--primary-500);
+          }
+        }
+      }
+    }
+  }
+  
+  // Responsive
+  @media (max-width: 1024px) {
+    .week-header,
+    .timesheet-row {
+      grid-template-columns: 150px repeat(7, 80px) 100px;
+      overflow-x: auto;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    padding: var(--spacing-md);
+    
+    .header .header-content h1 {
+      font-size: var(--text-2xl);
+    }
+    
+    .quick-add-form {
+      grid-template-columns: 1fr !important;
+    }
+  }
+}

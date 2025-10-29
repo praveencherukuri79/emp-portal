@@ -1,0 +1,11 @@
+@import 'styles/mixins';
+
+// App root component - NO IMPORTS, semantic variables only
+.app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+}

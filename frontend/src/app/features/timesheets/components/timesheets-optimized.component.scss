@@ -1,0 +1,11 @@
+@import 'styles/mixins';
+
+// Timesheets optimized component - NO IMPORTS
+.timesheets-optimized {
+  @include container;
+  
+  .calendar-view {
+    @include card-base;
+    padding: var(--spacing-lg);
+  }
+}

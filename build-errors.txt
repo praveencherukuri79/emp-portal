@@ -1,0 +1,979 @@
+﻿
+> emp-portal@1.0.0 build:frontend
+> ng build --configuration production
+
+node.exe : - Generating browser application bundles (phase: setup)...
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\prave\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (- Generating br...hase: setup)...:String) [], 
+    RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Γ£ö Browser application bundle generation complete.
+Γ£ö Browser application bundle generation complete.
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/leave-approvals/l
+eave-approvals.component.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/leave-approvals/l
+eave-approvals.component.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/leave-approvals/l
+eave-approvals.component.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/leave-approvals/l
+eave-approvals.component.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/timesheet-approva
+ls/timesheet-approvals.component.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/timesheet-approva
+ls/timesheet-approvals.component.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/timesheet-approva
+ls/timesheet-approvals.component.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/timesheet-approva
+ls/timesheet-approvals.component.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/login/login.component.
+scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/login/login.component.
+scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/login/login.component.
+scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/login/login.component.
+scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/signup/signup.componen
+t.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/signup/signup.componen
+t.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/signup/signup.componen
+t.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/signup/signup.componen
+t.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/dashboard/components/dashboard.compone
+nt.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/dashboard/components/dashboard.compone
+nt.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/dashboard/components/dashboard.compone
+nt.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/dashboard/components/dashboard.compone
+nt.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/documents/components/documents.compone
+nt.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/documents/components/documents.compone
+nt.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/documents/components/documents.compone
+nt.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/documents/components/documents.compone
+nt.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/leaves/components/leaves.component.scs
+s:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/leaves/components/leaves.component.scs
+s:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/leaves/components/leaves.component.scs
+s:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/leaves/components/leaves.component.scs
+s:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/settings/components/settings.component
+.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/settings/components/settings.component
+.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/settings/components/settings.component
+.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/settings/components/settings.component
+.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/member-detail/member-d
+etail.component.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/member-detail/member-d
+etail.component.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/member-detail/member-d
+etail.component.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/member-detail/member-d
+etail.component.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-list/team-list.co
+mponent.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-list/team-list.co
+mponent.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-list/team-list.co
+mponent.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-list/team-list.co
+mponent.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-stats/team-stats.
+component.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-stats/team-stats.
+component.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-stats/team-stats.
+component.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-stats/team-stats.
+component.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheet-entry-
+dialog/timesheet-entry-dialog.component.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheet-entry-
+dialog/timesheet-entry-dialog.component.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheet-entry-
+dialog/timesheet-entry-dialog.component.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheet-entry-
+dialog/timesheet-entry-dialog.component.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheets.compo
+nent.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheets.compo
+nent.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheets.compo
+nent.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheets.compo
+nent.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-form/user-form.co
+mponent.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-form/user-form.co
+mponent.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-form/user-form.co
+mponent.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-form/user-form.co
+mponent.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-list/user-list.co
+mponent.scss:2:18:
+      2 Γöé /******/ (() => { // webpackBootstrap
+        Γò╡                   ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-list/user-list.co
+mponent.scss:15:10:
+      15 Γöé /******/  // startup
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-list/user-list.co
+mponent.scss:16:10:
+      16 Γöé /******/  // Load entry module and return exports
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Comments in CSS use "/* ... */" instead of "//" [js-comment-in-css]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-list/user-list.co
+mponent.scss:17:10:
+      17 Γöé /******/  // This entry module doesn't tell about it's top-level d...
+         Γò╡           ~~
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/leave-approvals/l
+eave-approvals.component.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/timesheet-approva
+ls/timesheet-approvals.component.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/login/login.component.
+scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/signup/signup.componen
+t.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/dashboard/components/dashboard.compone
+nt.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/documents/components/documents.compone
+nt.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/leaves/components/leaves.component.scs
+s:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/settings/components/settings.component
+.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/member-detail/member-d
+etail.component.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-list/team-list.co
+mponent.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-stats/team-stats.
+component.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheet-entry-
+dialog/timesheet-entry-dialog.component.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheets.compo
+nent.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-form/user-form.co
+mponent.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unexpected ";" [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-list/user-list.co
+mponent.scss:1:12:
+      1 Γöé var resource;
+        Γò╡             ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/leave-approvals/l
+eave-approvals.component.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/approvals/components/timesheet-approva
+ls/timesheet-approvals.component.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/login/login.component.
+scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/auth/components/signup/signup.componen
+t.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/dashboard/components/dashboard.compone
+nt.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/documents/components/documents.compone
+nt.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/leaves/components/leaves.component.scs
+s:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/settings/components/settings.component
+.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/member-detail/member-d
+etail.component.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-list/team-list.co
+mponent.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/team/components/team-stats/team-stats.
+component.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheet-entry-
+dialog/timesheet-entry-dialog.component.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/timesheets/components/timesheets.compo
+nent.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-form/user-form.co
+mponent.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+Warning: Γû▓ [WARNING] Unterminated string token [css-syntax-error]
+
+    D:/Projects/emp-portal/frontend/src/app/features/user/components/user-list/user-list.co
+mponent.scss:17:100:
+      17 Γöé ...n't tell about it's top-level declarations so it can't be inlined
+         Γò╡                                                                     ^
+
+
+
+
+
+./frontend/src/app/features/approvals/components/leave-approvals/leave-approvals.component.
+scss?ngResource - Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined variable.
+   Γò╖
+52 Γöé   background: $surface-primary;
+   Γöé               ^^^^^^^^^^^^^^^^
+   Γò╡
+  frontend\src\app\features\approvals\components\leave-approvals\leave-approvals.component.
+scss 52:15  root stylesheet
+
+./frontend/src/app/features/approvals/components/timesheet-approvals/timesheet-approvals.co
+mponent.scss?ngResource - Error: Module build failed (from 
+./node_modules/sass-loader/dist/cjs.js):
+Undefined variable.
+   Γò╖
+52 Γöé   background: $surface-primary;
+   Γöé               ^^^^^^^^^^^^^^^^
+   Γò╡
+  frontend\src\app\features\approvals\components\timesheet-approvals\timesheet-approvals.co
+mponent.scss 52:15  root stylesheet
+
+./frontend/src/app/features/auth/components/login/login.component.scss?ngResource - Error: 
+Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined variable.
+   Γò╖
+39 Γöé   background: $overlay-light;
+   Γöé               ^^^^^^^^^^^^^^
+   Γò╡
+  frontend\src\app\features\auth\components\login\login.component.scss 39:15  root 
+stylesheet
+
+./frontend/src/app/features/auth/components/signup/signup.component.scss?ngResource - 
+Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined variable.
+   Γò╖
+82 Γöé       background: rgba($success-500, 0.4);
+   Γöé                        ^^^^^^^^^^^^
+   Γò╡
+  frontend\src\app\features\auth\components\signup\signup.component.scss 82:24  root 
+stylesheet
+
+./frontend/src/app/features/dashboard/components/dashboard.component.scss?ngResource - 
+Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+    Γò╖
+202 Γöé   @include glassmorphism-card();
+    Γöé   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Γò╡
+  frontend\src\app\features\dashboard\components\dashboard.component.scss 202:3  root 
+stylesheet
+
+./frontend/src/app/features/documents/components/documents.component.scss?ngResource - 
+Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+  Γò╖
+9 Γöé     @include section-header;
+  Γöé     ^^^^^^^^^^^^^^^^^^^^^^^
+  Γò╡
+  frontend\src\app\features\documents\components\documents.component.scss 9:5  root 
+stylesheet
+
+./frontend/src/app/features/leaves/components/leaves.component.scss?ngResource - Error: 
+Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+  Γò╖
+9 Γöé     @include section-header;
+  Γöé     ^^^^^^^^^^^^^^^^^^^^^^^
+  Γò╡
+  frontend\src\app\features\leaves\components\leaves.component.scss 9:5  root stylesheet
+
+./frontend/src/app/features/settings/components/settings.component.scss?ngResource - 
+Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+  Γò╖
+9 Γöé     @include section-header;
+  Γöé     ^^^^^^^^^^^^^^^^^^^^^^^
+  Γò╡
+  frontend\src\app\features\settings\components\settings.component.scss 9:5  root 
+stylesheet
+
+./frontend/src/app/features/team/components/member-detail/member-detail.component.scss?ngRe
+source - Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+   Γò╖
+22 Γöé     @include icon-with-text;
+   Γöé     ^^^^^^^^^^^^^^^^^^^^^^^
+   Γò╡
+  frontend\src\app\features\team\components\member-detail\member-detail.component.scss 
+22:5  root stylesheet
+
+./frontend/src/app/features/team/components/team-list/team-list.component.scss?ngResource 
+- Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+  Γò╖
+8 Γöé   @include section-header;
+  Γöé   ^^^^^^^^^^^^^^^^^^^^^^^
+  Γò╡
+  frontend\src\app\features\team\components\team-list\team-list.component.scss 8:3  root 
+stylesheet
+
+./frontend/src/app/features/team/components/team-stats/team-stats.component.scss?ngResource
+ - Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+  Γò╖
+8 Γöé   @include section-header;
+  Γöé   ^^^^^^^^^^^^^^^^^^^^^^^
+  Γò╡
+  frontend\src\app\features\team\components\team-stats\team-stats.component.scss 8:3  root 
+stylesheet
+
+./frontend/src/app/features/timesheets/components/timesheet-entry-dialog/timesheet-entry-di
+alog.component.scss?ngResource - Error: Module build failed (from 
+./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+   Γò╖
+85 Γöé           @include glassmorphism-card();
+   Γöé           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   Γò╡
+  frontend\src\app\features\timesheets\components\timesheet-entry-dialog\timesheet-entry-di
+alog.component.scss 85:11  root stylesheet
+
+./frontend/src/app/features/timesheets/components/timesheets.component.scss?ngResource - 
+Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+   Γò╖
+39 Γöé   @include glassmorphism-card();
+   Γöé   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   Γò╡
+  frontend\src\app\features\timesheets\components\timesheets.component.scss 39:3  root 
+stylesheet
+
+./frontend/src/app/features/user/components/user-form/user-form.component.scss?ngResource 
+- Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+   Γò╖
+10 Γöé   @include section-header;
+   Γöé   ^^^^^^^^^^^^^^^^^^^^^^^
+   Γò╡
+  frontend\src\app\features\user\components\user-form\user-form.component.scss 10:3  root 
+stylesheet
+
+./frontend/src/app/features/user/components/user-list/user-list.component.scss?ngResource 
+- Error: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Undefined mixin.
+  Γò╖
+8 Γöé   @include section-header;
+  Γöé   ^^^^^^^^^^^^^^^^^^^^^^^
+  Γò╡
+  frontend\src\app\features\user\components\user-list\user-list.component.scss 8:3  root 
+stylesheet
+
+

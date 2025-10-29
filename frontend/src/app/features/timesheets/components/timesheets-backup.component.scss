@@ -1,0 +1,7 @@
+@import 'styles/mixins';
+
+// Timesheets backup component - NO IMPORTS
+.timesheets-backup {
+  @include container;
+  padding: var(--spacing-lg);
+}

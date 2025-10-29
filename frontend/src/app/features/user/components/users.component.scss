@@ -1,0 +1,11 @@
+@import 'styles/mixins';
+
+// Users component - NO IMPORTS
+.users {
+  @include container;
+  
+  .header {
+    @include flex-between;
+    margin-bottom: var(--spacing-lg);
+  }
+}

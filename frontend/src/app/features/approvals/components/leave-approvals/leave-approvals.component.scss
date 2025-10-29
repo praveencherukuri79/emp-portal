@@ -1,0 +1,45 @@
+@import 'styles/mixins';
+
+// Leave approvals component - NO IMPORTS
+.leave-approvals {
+  .approvals-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .approval-item {
+    @include card-base;
+    padding: var(--spacing-lg);
+    
+    .approval-header {
+      @include flex-between;
+      margin-bottom: var(--spacing-md);
+      
+      .employee-name {
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      
+      .leave-type {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--radius-sm);
+        font-size: var(--text-sm);
+        background: var(--info-100);
+        color: var(--info-700);
+      }
+    }
+    
+    .leave-details {
+      margin-bottom: var(--spacing-md);
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+    }
+    
+    .actions {
+      display: flex;
+      gap: var(--spacing-sm);
+      justify-content: flex-end;
+    }
+  }
+}

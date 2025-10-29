@@ -1,0 +1,257 @@
+<div class="member-detail-container" *ngIf="!loading && !error && member">
+  <!-- Header -->
+  <div class="header">
+    <button mat-icon-button (click)="goBack()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    
+    <div class="member-header-info">
+      <div class="member-avatar-large" *ngIf="!member.avatar">
+        {{getInitials()}}
+      </div>
+      <img class="member-avatar-large" [src]="member.avatar" [alt]="member.fullName" *ngIf="member.avatar">
+      
+      <div class="member-basic-info">
+        <h1>{{member.fullName || member.firstName + ' ' + member.lastName}}</h1>
+        <p class="member-designation" *ngIf="member.designation">{{member.designation}}</p>
+        <p class="member-department" *ngIf="member.department">{{member.department}}</p>
+        
+        <div class="member-badges">
+          <mat-chip [color]="getStatusColor(member.role)" selected>
+            {{getRoleLabel(member.role)}}
+          </mat-chip>
+          <mat-chip [color]="getStatusColor(member.status)" selected>
+            <mat-icon *ngIf="member.status === 'ACTIVE'">check_circle</mat-icon>
+            <mat-icon *ngIf="member.status === 'INACTIVE'">pause_circle</mat-icon>
+            <mat-icon *ngIf="member.status === 'SUSPENDED'">block</mat-icon>
+            {{member.status}}
+          </mat-chip>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions" *ngIf="canEditMember()">
+      <button mat-stroked-button (click)="editMember()">
+        <mat-icon>edit</mat-icon>
+        Edit Member
+      </button>
+      <button mat-stroked-button (click)="toggleMemberStatus()">
+        <mat-icon *ngIf="member.status === 'ACTIVE'">pause</mat-icon>
+        <mat-icon *ngIf="member.status !== 'ACTIVE'">play_arrow</mat-icon>
+        {{member.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}}
+      </button>
+      <button mat-stroked-button color="warn" (click)="deleteMember()">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+      <button mat-icon-button (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <mat-tab-group [selectedIndex]="activeTab === 'profile' ? 0 : 1" (selectedIndexChange)="onTabChange($event)" class="member-tabs">
+    
+    <!-- Profile Tab -->
+    <mat-tab label="Profile">
+      <div class="tab-content">
+        <div class="profile-grid">
+          
+          <!-- Contact Information -->
+          <mat-card class="profile-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>contact_mail</mat-icon>
+                Contact Information
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">Email</span>
+                  <a [href]="'mailto:' + member.email" class="info-value email-link">{{member.email}}</a>
+                </div>
+                <div class="info-item" *ngIf="member.phone">
+                  <span class="info-label">Phone</span>
+                  <a [href]="'tel:' + member.phone" class="info-value">{{member.phone}}</a>
+                </div>
+                <div class="info-item" *ngIf="member.lastLogin">
+                  <span class="info-label">Last Login</span>
+                  <span class="info-value">{{member.lastLogin | date:'medium'}}</span>
+                </div>
+                <div class="info-item" *ngIf="member.joinDate">
+                  <span class="info-label">Join Date</span>
+                  <span class="info-value">{{member.joinDate | date:'mediumDate'}}</span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Employment Details -->
+          <mat-card class="profile-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>work</mat-icon>
+                Employment Details
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">Role</span>
+                  <span class="info-value">{{getRoleLabel(member.role)}}</span>
+                </div>
+                <div class="info-item" *ngIf="member.department">
+                  <span class="info-label">Department</span>
+                  <span class="info-value">{{member.department}}</span>
+                </div>
+                <div class="info-item" *ngIf="member.designation">
+                  <span class="info-label">Designation</span>
+                  <span class="info-value">{{member.designation}}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Status</span>
+                  <mat-chip [color]="getStatusColor(member.status)" selected class="status-chip">
+                    {{member.status}}
+                  </mat-chip>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Activity Summary -->
+          <mat-card class="profile-card activity-summary" *ngIf="memberActivity">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>analytics</mat-icon>
+                Quick Activity Overview
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="activity-stats">
+                <div class="activity-stat">
+                  <span class="stat-number">{{memberActivity.timesheets.length}}</span>
+                  <span class="stat-label">Recent Timesheets</span>
+                </div>
+                <div class="activity-stat">
+                  <span class="stat-number">{{memberActivity.leaves.length}}</span>
+                  <span class="stat-label">Leave Requests</span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Activity Tab -->
+    <mat-tab label="Activity">
+      <div class="tab-content">
+        <div class="activity-grid" *ngIf="memberActivity">
+          
+          <!-- Recent Timesheets -->
+          <mat-card class="activity-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>schedule</mat-icon>
+                Recent Timesheets
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="activity-list" *ngIf="memberActivity.timesheets.length > 0; else noTimesheets">
+                <div class="activity-item" 
+                     *ngFor="let timesheet of memberActivity.timesheets" 
+                     (click)="navigateToTimesheetDetail(timesheet._id)">
+                  <div class="activity-icon">
+                    <mat-icon>schedule</mat-icon>
+                  </div>
+                  <div class="activity-info">
+                    <div class="activity-title">{{timesheet.project}}</div>
+                    <div class="activity-subtitle">{{timesheet.description}}</div>
+                    <div class="activity-meta">
+                      <span>{{timesheet.date | date:'shortDate'}}</span>
+                      <span>{{timesheet.hours}} hours</span>
+                    </div>
+                  </div>
+                  <mat-chip [color]="getTimesheetStatusColor(timesheet.status)" selected class="activity-status">
+                    {{timesheet.status}}
+                  </mat-chip>
+                </div>
+              </div>
+              <ng-template #noTimesheets>
+                <div class="no-activity">
+                  <mat-icon>schedule</mat-icon>
+                  <p>No recent timesheets</p>
+                </div>
+              </ng-template>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Recent Leaves -->
+          <mat-card class="activity-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>event_available</mat-icon>
+                Leave Requests
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="activity-list" *ngIf="memberActivity.leaves.length > 0; else noLeaves">
+                <div class="activity-item" 
+                     *ngFor="let leave of memberActivity.leaves"
+                     (click)="navigateToLeaveDetail(leave._id)">
+                  <div class="activity-icon">
+                    <mat-icon>event_available</mat-icon>
+                  </div>
+                  <div class="activity-info">
+                    <div class="activity-title">{{leave.leaveType | titlecase}} Leave</div>
+                    <div class="activity-subtitle">{{leave.reason}}</div>
+                    <div class="activity-meta">
+                      <span>{{leave.startDate | date:'shortDate'}} - {{leave.endDate | date:'shortDate'}}</span>
+                      <span>{{leave.totalDays}} day(s)</span>
+                    </div>
+                  </div>
+                  <mat-chip [color]="getLeaveStatusColor(leave.status)" selected class="activity-status">
+                    {{leave.status}}
+                  </mat-chip>
+                </div>
+              </div>
+              <ng-template #noLeaves>
+                <div class="no-activity">
+                  <mat-icon>event_available</mat-icon>
+                  <p>No leave requests</p>
+                </div>
+              </ng-template>
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+
+        <!-- Loading Activity -->
+        <div class="activity-loading" *ngIf="!memberActivity">
+          <mat-spinner diameter="32"></mat-spinner>
+          <p>Loading activity...</p>
+        </div>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>
+
+<!-- Loading State -->
+<div class="loading-spinner" *ngIf="loading">
+  <mat-spinner diameter="48"></mat-spinner>
+  <p>Loading member details...</p>
+</div>
+
+<!-- Error State -->
+<div class="error-message" *ngIf="error">
+  <mat-icon>error</mat-icon>
+  <span>{{error}}</span>
+  <button mat-button color="primary" (click)="refresh()">
+    <mat-icon>refresh</mat-icon>
+    Retry
+  </button>
+</div>

@@ -1,0 +1,49 @@
+@import 'styles/mixins';
+
+// Approval dialog - NO IMPORTS
+.approval-dialog {
+  padding: var(--spacing-lg);
+  
+  .dialog-content {
+    margin-bottom: var(--spacing-lg);
+    
+    .detail-row {
+      display: flex;
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--border-color);
+      
+      .label {
+        font-weight: 500;
+        color: var(--text-primary);
+        min-width: 120px;
+      }
+      
+      .value {
+        color: var(--text-secondary);
+      }
+    }
+  }
+  
+  .comments {
+    margin-bottom: var(--spacing-lg);
+    
+    label {
+      display: block;
+      margin-bottom: var(--spacing-xs);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    
+    textarea {
+      @include input-base;
+      min-height: 100px;
+      resize: vertical;
+    }
+  }
+  
+  .actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+  }
+}

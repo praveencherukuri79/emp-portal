@@ -1,0 +1,10 @@
+@import 'styles/mixins';
+
+// Approvals component - NO IMPORTS
+.approvals {
+  @include container;
+  
+  .tabs {
+    margin-bottom: var(--spacing-lg);
+  }
+}

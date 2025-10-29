@@ -1,0 +1,18 @@
+@import 'styles/mixins';
+
+// Confirm dialog - NO IMPORTS
+.confirm-dialog {
+  padding: var(--spacing-lg);
+  
+  .message {
+    margin-bottom: var(--spacing-xl);
+    color: var(--text-primary);
+    font-size: var(--text-base);
+  }
+  
+  .actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+  }
+}

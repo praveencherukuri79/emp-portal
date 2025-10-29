@@ -1,0 +1,252 @@
+<div class="team-list-container">
+  <!-- Header -->
+  <div class="header">
+    <h2>
+      <mat-icon>group</mat-icon>
+      Team Members
+    </h2>
+    <div class="header-actions">
+      <button mat-stroked-button (click)="clearFilters()" *ngIf="searchTerm || roleFilter || statusFilter">
+        <mat-icon>clear</mat-icon>
+        Clear Filters
+      </button>
+      <button mat-raised-button color="primary" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search members...</mat-label>
+      <input matInput 
+             [(ngModel)]="searchTerm" 
+             (ngModelChange)="applySearch()" 
+             placeholder="Name, email, or role">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Filter by Role</mat-label>
+      <mat-select [(value)]="roleFilter" (selectionChange)="applyRoleAndStatusFilters()">
+        <mat-option value="">All Roles</mat-option>
+        <mat-option *ngFor="let role of roles" [value]="role.value">
+          {{role.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Filter by Status</mat-label>
+      <mat-select [(value)]="statusFilter" (selectionChange)="applyRoleAndStatusFilters()">
+        <mat-option value="">All Statuses</mat-option>
+        <mat-option *ngFor="let status of statuses" [value]="status.value">
+          {{status.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Bulk Actions -->
+  <div class="bulk-actions" *ngIf="canPerformBulkAction()">
+    <span class="selection-info">{{selection.selected.length}} member(s) selected</span>
+    <div class="bulk-buttons">
+      <button mat-button color="primary" (click)="bulkActivate()">
+        <mat-icon>check_circle</mat-icon>
+        Activate
+      </button>
+      <button mat-button color="warn" (click)="bulkDeactivate()">
+        <mat-icon>pause_circle</mat-icon>
+        Deactivate
+      </button>
+      <button mat-button color="accent" (click)="bulkDelete()">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="error">
+    <mat-icon>error</mat-icon>
+    <span>{{error}}</span>
+    <button mat-button color="primary" (click)="loadTeamMembers()">
+      <mat-icon>refresh</mat-icon>
+      Retry
+    </button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="48"></mat-spinner>
+    <p>Loading team members...</p>
+  </div>
+
+  <!-- Data Table -->
+  <div class="table-container" *ngIf="!loading && !error">
+    <table mat-table [dataSource]="dataSource" matSort class="team-table">
+      
+      <!-- Selection Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let member">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(member) : null"
+                        [checked]="selection.isSelected(member)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Avatar Column -->
+      <ng-container matColumnDef="avatar">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let member" class="avatar-cell">
+          <div class="member-avatar" *ngIf="!member.avatar">
+            {{getInitials(member)}}
+          </div>
+          <img class="member-avatar" [src]="member.avatar" [alt]="member.fullName" *ngIf="member.avatar">
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let member" class="name-cell">
+          <div class="member-info">
+            <span class="member-name">{{member.fullName || member.firstName + ' ' + member.lastName}}</span>
+            <span class="member-designation" *ngIf="member.designation">{{member.designation}}</span>
+            <span class="member-department" *ngIf="member.department">{{member.department}}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let member">
+          <a [href]="'mailto:' + member.email" class="email-link">{{member.email}}</a>
+        </td>
+      </ng-container>
+
+      <!-- Role Column -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+        <td mat-cell *matCellDef="let member">
+          <mat-chip [color]="getStatusColor(member.role)" selected>
+            {{getRoleLabel(member.role)}}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let member">
+          <mat-chip [color]="getStatusColor(member.status)" selected>
+            <mat-icon *ngIf="member.status === 'ACTIVE'">check_circle</mat-icon>
+            <mat-icon *ngIf="member.status === 'INACTIVE'">pause_circle</mat-icon>
+            <mat-icon *ngIf="member.status === 'SUSPENDED'">block</mat-icon>
+            {{member.status}}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <!-- Last Active Column -->
+      <ng-container matColumnDef="lastActive">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Active </th>
+        <td mat-cell *matCellDef="let member">
+          <span class="last-active" *ngIf="member.lastLogin; else never">
+            {{member.lastLogin | date:'short'}}
+          </span>
+          <ng-template #never>
+            <span class="last-active never">Never</span>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let member" class="actions-cell">
+          <button mat-icon-button (click)="viewMember(member)" matTooltip="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          
+          <button mat-icon-button 
+                  (click)="editMember(member)"
+                  [disabled]="!canEditMember(member)"
+                  matTooltip="Edit Member">
+            <mat-icon>edit</mat-icon>
+          </button>
+          
+          <button mat-icon-button 
+                  (click)="toggleMemberStatus(member)"
+                  [disabled]="!canEditMember(member)"
+                  [matTooltip]="member.status === 'ACTIVE' ? 'Deactivate' : 'Activate'">
+            <mat-icon *ngIf="member.status === 'ACTIVE'">pause</mat-icon>
+            <mat-icon *ngIf="member.status !== 'ACTIVE'">play_arrow</mat-icon>
+          </button>
+
+          <button mat-icon-button 
+                  (click)="deleteMember(member)"
+                  [disabled]="!canEditMember(member)"
+                  matTooltip="Delete Member"
+                  color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+
+          <button mat-icon-button [matMenuTriggerFor]="memberMenu" matTooltip="More Actions">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+          <mat-menu #memberMenu="matMenu">
+            <button mat-menu-item (click)="viewMember(member)">
+              <mat-icon>visibility</mat-icon>
+              <span>View Profile</span>
+            </button>
+            <button mat-menu-item (click)="editMember(member)" [disabled]="!canEditMember(member)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit Details</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="toggleMemberStatus(member)" [disabled]="!canEditMember(member)">
+              <mat-icon *ngIf="member.status === 'ACTIVE'">pause</mat-icon>
+              <mat-icon *ngIf="member.status !== 'ACTIVE'">play_arrow</mat-icon>
+              <span>{{member.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}}</span>
+            </button>
+            <button mat-menu-item (click)="deleteMember(member)" [disabled]="!canEditMember(member)">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Delete Member</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="viewMember(row)" class="table-row"></tr>
+    </table>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" 
+                   [showFirstLastButtons]="true"
+                   aria-label="Select page of team members">
+    </mat-paginator>
+  </div>
+
+  <!-- No Data State -->
+  <div class="no-data" *ngIf="!loading && !error && dataSource.data.length === 0">
+    <mat-icon class="no-data-icon">group_off</mat-icon>
+    <h3>No team members found</h3>
+    <p>Try adjusting your search criteria or contact your administrator.</p>
+    <button mat-raised-button color="primary" (click)="clearFilters()">
+      Clear Filters
+    </button>
+  </div>
+</div>

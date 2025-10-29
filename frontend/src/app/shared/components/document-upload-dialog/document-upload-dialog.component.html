@@ -1,0 +1,77 @@
+<div class="upload-dialog">
+  <h2 mat-dialog-title>
+    <mat-icon>cloud_upload</mat-icon>
+    <span>Upload Document</span>
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="uploadForm">
+      <!-- File Upload Area -->
+      <div class="upload-area" 
+           [class.has-file]="selectedFile"
+           (click)="selectedFile ? null : fileInput.click()">
+        @if (!selectedFile) {
+          <mat-icon class="upload-icon">cloud_upload</mat-icon>
+          <p class="upload-text">Tap to select file</p>
+          <p class="upload-hint">PDF, DOC, XLS, Images (Max {{ maxSizeMB }}MB)</p>
+        } @else {
+          <div class="file-preview">
+            <mat-icon class="file-icon" [style.color]="getFileColor()">{{ fileIcon }}</mat-icon>
+            <div class="file-details">
+              <p class="file-name">{{ selectedFile.name }}</p>
+              <p class="file-size">{{ fileSizeFormatted }}</p>
+            </div>
+            <button type="button" mat-icon-button (click)="removeFile(); $event.stopPropagation()" class="remove-btn">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        }
+        <input 
+          #fileInput 
+          type="file" 
+          [accept]="acceptedFormats.join(',')"
+          (change)="onFileSelected($event)"
+          style="display: none;">
+      </div>
+
+      <!-- Category Selection -->
+      <div class="category-grid">
+        @for (cat of categories; track cat.value) {
+          <button type="button"
+                  class="category-card"
+                  [class.selected]="uploadForm.get('category')?.value === cat.value"
+                  (click)="selectCategory(cat.value)">
+            <mat-icon [style.color]="cat.color">{{ cat.icon }}</mat-icon>
+            <span>{{ cat.label }}</span>
+          </button>
+        }
+      </div>
+
+      <!-- Description -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description (optional)</mat-label>
+        <textarea matInput 
+                  formControlName="description"
+                  rows="2"
+                  maxlength="150"
+                  placeholder="Brief description"></textarea>
+        <mat-hint align="end">{{ uploadForm.get('description')?.value?.length || 0 }}/150</mat-hint>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button (click)="onCancel()" [disabled]="isSubmitting">Cancel</button>
+    <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="!uploadForm.valid || !selectedFile || isSubmitting">
+      @if (isSubmitting) {
+        <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
+        Uploading...
+      } @else {
+        <ng-container>
+          <mat-icon>upload</mat-icon>
+          Upload
+        </ng-container>
+      }
+    </button>
+  </mat-dialog-actions>
+</div>

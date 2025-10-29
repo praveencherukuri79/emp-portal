@@ -1,0 +1,34 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>{{ getTitle() }}</h2>
+
+  <mat-dialog-content>
+    <p class="message">{{ getMessage() }}</p>
+
+    <form [formGroup]="form" *ngIf="data.requireReason">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Reason for Rejection</mat-label>
+        <textarea 
+          matInput 
+          formControlName="reason" 
+          rows="4"
+          placeholder="Please provide a reason for rejection..."
+          required>
+        </textarea>
+        <mat-error *ngIf="form.get('reason')?.hasError('required')">
+          Reason is required
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button 
+      mat-raised-button 
+      [color]="data.action === 'approve' ? 'primary' : 'warn'"
+      (click)="onConfirm()"
+      [disabled]="data.requireReason && !form.valid">
+      {{ data.action === 'approve' ? 'Approve' : 'Reject' }}
+    </button>
+  </mat-dialog-actions>
+</div>

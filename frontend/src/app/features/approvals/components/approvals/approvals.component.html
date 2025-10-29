@@ -1,0 +1,26 @@
+<div class="approvals-container">
+  <div class="header">
+    <h1>Approvals</h1>
+    <p class="subtitle">Review and manage pending requests</p>
+  </div>
+
+  <mat-tab-group animationDuration="300ms" class="approvals-tabs">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">schedule</mat-icon>
+        <span>Timesheets</span>
+        <span class="badge" *ngIf="pendingTimesheetsCount > 0" [matBadge]="pendingTimesheetsCount" matBadgeColor="warn"></span>
+      </ng-template>
+      <app-timesheet-approvals (countChange)="onTimesheetsCountChange($event)"></app-timesheet-approvals>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">event_busy</mat-icon>
+        <span>Leaves</span>
+        <span class="badge" *ngIf="pendingLeavesCount > 0" [matBadge]="pendingLeavesCount" matBadgeColor="warn"></span>
+      </ng-template>
+      <app-leave-approvals (countChange)="onLeavesCountChange($event)"></app-leave-approvals>
+    </mat-tab>
+  </mat-tab-group>
+</div>

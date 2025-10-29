@@ -1,0 +1,126 @@
+<div class="team-stats-container">
+  <div class="header">
+    <h2>Team Statistics</h2>
+    <button mat-icon-button (click)="refresh()" matTooltip="Refresh">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    <mat-icon>error</mat-icon>
+    <span>{{ error }}</span>
+    <button mat-button (click)="refresh()">Retry</button>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading team statistics...</p>
+  </div>
+
+  <div class="stats-grid" *ngIf="stats && !loading">
+    <!-- Team Members -->
+    <mat-card class="stat-card team-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar-icon team-icon">
+          <mat-icon>groups</mat-icon>
+        </div>
+        <mat-card-title>Team Members</mat-card-title>
+        <mat-card-subtitle>{{ stats.activeMembers }} of {{ stats.totalMembers }} active</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stat-number">{{ stats.totalMembers }}</div>
+        <div class="stat-label">Total Members</div>
+        <mat-progress-bar 
+          mode="determinate" 
+          [value]="stats.totalMembers > 0 ? (stats.activeMembers / stats.totalMembers) * 100 : 0">
+        </mat-progress-bar>
+        <div class="progress-label">{{ stats.activeMembers }} active this week</div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Pending Approvals -->
+    <mat-card class="stat-card approvals-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar-icon approvals-icon">
+          <mat-icon>pending_actions</mat-icon>
+        </div>
+        <mat-card-title>Pending Approvals</mat-card-title>
+        <mat-card-subtitle>Requires your attention</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="approval-stats">
+          <div class="approval-item">
+            <div class="approval-count">{{ stats.pendingTimesheets }}</div>
+            <div class="approval-label">Timesheets</div>
+          </div>
+          <div class="approval-item">
+            <div class="approval-count">{{ stats.pendingLeaves }}</div>
+            <div class="approval-label">Leave Requests</div>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary" routerLink="/approvals">
+          <mat-icon>arrow_forward</mat-icon>
+          View Approvals
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- This Month Activity -->
+    <mat-card class="stat-card activity-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar-icon activity-icon">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+        <mat-card-title>This Month</mat-card-title>
+        <mat-card-subtitle>Team activity overview</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="activity-stats">
+          <div class="activity-item">
+            <mat-icon>schedule</mat-icon>
+            <div class="activity-info">
+              <div class="activity-count">{{ stats.thisMonthTimesheets }}</div>
+              <div class="activity-label">Timesheet Entries</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <mat-icon>event_busy</mat-icon>
+            <div class="activity-info">
+              <div class="activity-count">{{ stats.thisMonthLeaves }}</div>
+              <div class="activity-label">Leave Requests</div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Quick Actions -->
+    <mat-card class="stat-card actions-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar-icon actions-icon">
+          <mat-icon>flash_on</mat-icon>
+        </div>
+        <mat-card-title>Quick Actions</mat-card-title>
+        <mat-card-subtitle>Common tasks</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="quick-actions">
+          <button mat-raised-button color="primary" routerLink="/approvals">
+            <mat-icon>check_circle</mat-icon>
+            Review Approvals
+          </button>
+          <button mat-raised-button routerLink="/reports">
+            <mat-icon>assessment</mat-icon>
+            View Reports
+          </button>
+          <button mat-raised-button routerLink="/users" color="accent">
+            <mat-icon>person_add</mat-icon>
+            Manage Users
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

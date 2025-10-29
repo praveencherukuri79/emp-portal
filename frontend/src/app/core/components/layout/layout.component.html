@@ -1,0 +1,130 @@
+<div class="layout-container" [class.dark-theme]="isDark$()">
+  <!-- Top Navigation Bar -->
+  <mat-toolbar color="primary" class="top-toolbar primary-toolbar">
+    <button mat-icon-button (click)="toggleSidenav()" class="menu-button">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="app-title">Employer Portal</span>
+
+    <span class="toolbar-spacer"></span>
+
+    <!-- Theme Toggle -->
+    <button mat-icon-button (click)="toggleTheme()" matTooltip="Toggle theme">
+      <mat-icon>{{ isDark$() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+
+    <!-- Notifications -->
+    <button mat-icon-button [matMenuTriggerFor]="notificationsMenu" matTooltip="Notifications">
+      <mat-icon [matBadge]="'3'" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+    </button>
+
+    <!-- User Menu -->
+    <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+      <div class="user-avatar">{{ getUserInitials() }}</div>
+      <span class="user-name">{{ getUserDisplayName() }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- Sidenav Container -->
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Side Navigation -->
+    <mat-sidenav 
+      [opened]="sidenavOpened" 
+      [mode]="'side'" 
+      class="sidenav main-sidenav"
+      [fixedInViewport]="true"
+      [fixedTopGap]="64">
+      
+      <!-- User Info Card -->
+      <div class="user-info-card">
+        <div class="user-avatar-large">{{ getUserInitials() }}</div>
+        <h3 class="user-name-large">{{ getUserDisplayName() }}</h3>
+        <div class="role-badge" [ngClass]="getRoleBadgeClass()">
+          {{ getRoleDisplayName() }}
+        </div>
+      </div>
+
+      <!-- Navigation List -->
+      <mat-nav-list>
+        <a 
+          mat-list-item 
+          *ngFor="let item of navItems" 
+          [routerLink]="item.route"
+          routerLinkActive="active-link nav-item active"
+          [routerLinkActiveOptions]="{exact: item.route === '/dashboard'}"
+          class="nav-item">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      </mat-nav-list>
+
+      <!-- Divider -->
+      <mat-divider></mat-divider>
+
+      <!-- Logout -->
+      <mat-nav-list>
+        <a mat-list-item (click)="logout()" class="logout-item">
+          <mat-icon matListItemIcon>logout</mat-icon>
+          <span matListItemTitle>Logout</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Main Content -->
+    <mat-sidenav-content class="main-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<!-- User Menu -->
+<mat-menu #userMenu="matMenu" xPosition="before">
+  <button mat-menu-item (click)="navigateToProfile()">
+    <mat-icon>person</mat-icon>
+    <span>My Profile</span>
+  </button>
+  <button mat-menu-item routerLink="/settings">
+    <mat-icon>settings</mat-icon>
+    <span>Settings</span>
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </button>
+</mat-menu>
+
+<!-- Notifications Menu -->
+<mat-menu #notificationsMenu="matMenu" xPosition="before" class="notifications-menu">
+  <div class="notifications-header" mat-menu-item disabled>
+    <h3>Notifications</h3>
+  </div>
+  <mat-divider></mat-divider>
+  <button mat-menu-item>
+    <mat-icon>check_circle</mat-icon>
+    <div class="notification-content">
+      <span class="notification-title">Timesheet Approved</span>
+      <span class="notification-time">2 hours ago</span>
+    </div>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>event</mat-icon>
+    <div class="notification-content">
+      <span class="notification-title">Leave Request Pending</span>
+      <span class="notification-time">5 hours ago</span>
+    </div>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>folder</mat-icon>
+    <div class="notification-content">
+      <span class="notification-title">Document Uploaded</span>
+      <span class="notification-time">1 day ago</span>
+    </div>
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item class="view-all-button">
+    <span>View All Notifications</span>
+  </button>
+</mat-menu>

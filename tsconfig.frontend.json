@@ -1,0 +1,52 @@
+{
+  "extends": "./tsconfig.json",
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "frontend/",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@core/*": ["src/app/core/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@features/*": ["src/app/features/*"],
+      "@env/*": ["src/environments/*"],
+      "@assets/*": ["src/assets/*"]
+    },
+    "outDir": "./frontend/dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false,
+    "lib": [
+      "ES2022",
+      "dom"
+    ]
+  },
+  "files": [
+    "frontend/src/main.ts"
+  ],
+  "include": [
+    "frontend/src/**/*.d.ts",
+    "frontend/src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "backend"
+  ],
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

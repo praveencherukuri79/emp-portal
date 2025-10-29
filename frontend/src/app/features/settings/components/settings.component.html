@@ -1,0 +1,338 @@
+<div class="settings-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <mat-icon class="page-icon">settings</mat-icon>
+        <div>
+          <h1>Settings</h1>
+          <p class="subtitle">Manage your account settings and preferences</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- Settings Tabs -->
+  <mat-card *ngIf="!loading" class="settings-card">
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="300ms">
+      
+      <!-- Profile Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">person</mat-icon>
+          <span>Profile</span>
+        </ng-template>
+        
+        <div class="tab-content">
+          <h2 class="tab-title">Profile Information</h2>
+          <p class="tab-description">Update your personal information and contact details</p>
+
+          <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+            <div class="form-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" required>
+                <mat-icon matPrefix>person</mat-icon>
+                <mat-error *ngIf="profileForm.get('firstName')?.hasError('required')">
+                  First name is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" required>
+                <mat-icon matPrefix>person_outline</mat-icon>
+                <mat-error *ngIf="profileForm.get('lastName')?.hasError('required')">
+                  Last name is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email">
+                <mat-icon matPrefix>email</mat-icon>
+                <mat-hint>Email cannot be changed</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phone" type="tel">
+                <mat-icon matPrefix>phone</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Department</mat-label>
+                <input matInput formControlName="department">
+                <mat-icon matPrefix>business</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Designation</mat-label>
+                <input matInput formControlName="designation">
+                <mat-icon matPrefix>work</mat-icon>
+              </mat-form-field>
+            </div>
+
+            <div class="form-actions">
+              <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid || saving">
+                <mat-icon>save</mat-icon>
+                {{ saving ? 'Saving...' : 'Save Changes' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+
+      <!-- Preferences Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">tune</mat-icon>
+          <span>Preferences</span>
+        </ng-template>
+        
+        <div class="tab-content">
+          <h2 class="tab-title">Application Preferences</h2>
+          <p class="tab-description">Customize your application experience</p>
+
+          <form [formGroup]="preferencesForm" (ngSubmit)="updatePreferences()">
+            <div class="form-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Language</mat-label>
+                <mat-select formControlName="language">
+                  <mat-option *ngFor="let lang of languages" [value]="lang.value">
+                    {{ lang.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>language</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Timezone</mat-label>
+                <mat-select formControlName="timezone">
+                  <mat-option *ngFor="let tz of timezones" [value]="tz.value">
+                    {{ tz.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>schedule</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Date Format</mat-label>
+                <mat-select formControlName="dateFormat">
+                  <mat-option *ngFor="let format of dateFormats" [value]="format.value">
+                    {{ format.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>event</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Theme</mat-label>
+                <mat-select formControlName="theme">
+                  <mat-option *ngFor="let theme of themes" [value]="theme.value">
+                    {{ theme.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>palette</mat-icon>
+              </mat-form-field>
+            </div>
+
+            <div class="form-actions">
+              <button mat-raised-button color="primary" type="submit" [disabled]="preferencesForm.invalid || saving">
+                <mat-icon>save</mat-icon>
+                {{ saving ? 'Saving...' : 'Save Preferences' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+
+      <!-- Security Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">security</mat-icon>
+          <span>Security</span>
+        </ng-template>
+        
+        <div class="tab-content">
+          <h2 class="tab-title">Security Settings</h2>
+          <p class="tab-description">Manage your password and security preferences</p>
+
+          <form [formGroup]="securityForm" (ngSubmit)="changePassword()">
+            <div class="form-grid-single">
+              <mat-form-field appearance="outline">
+                <mat-label>Current Password</mat-label>
+                <input matInput 
+                       [type]="showCurrentPassword ? 'text' : 'password'" 
+                       formControlName="currentPassword" 
+                       required>
+                <mat-icon matPrefix>lock</mat-icon>
+                <button mat-icon-button matSuffix 
+                        type="button"
+                        (click)="showCurrentPassword = !showCurrentPassword">
+                  <mat-icon>{{ showCurrentPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="securityForm.get('currentPassword')?.hasError('required')">
+                  Current password is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>New Password</mat-label>
+                <input matInput 
+                       [type]="showNewPassword ? 'text' : 'password'" 
+                       formControlName="newPassword" 
+                       required>
+                <mat-icon matPrefix>lock_outline</mat-icon>
+                <button mat-icon-button matSuffix 
+                        type="button"
+                        (click)="showNewPassword = !showNewPassword">
+                  <mat-icon>{{ showNewPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="securityForm.get('newPassword')?.hasError('required')">
+                  New password is required
+                </mat-error>
+                <mat-error *ngIf="securityForm.get('newPassword')?.hasError('minlength')">
+                  Password must be at least 8 characters
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Password Strength Indicator -->
+              <div class="password-strength" *ngIf="securityForm.get('newPassword')?.value">
+                <div class="strength-label">
+                  Password Strength: 
+                  <span [style.color]="getPasswordStrengthColor()">
+                    {{ getPasswordStrength() | titlecase }}
+                  </span>
+                </div>
+                <div class="strength-bar">
+                  <div class="strength-fill" 
+                       [style.width]="getPasswordStrength() === 'strong' ? '100%' : 
+                                     getPasswordStrength() === 'medium' ? '66%' : '33%'"
+                       [style.background-color]="getPasswordStrengthColor()">
+                  </div>
+                </div>
+              </div>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Confirm New Password</mat-label>
+                <input matInput 
+                       [type]="showConfirmPassword ? 'text' : 'password'" 
+                       formControlName="confirmPassword" 
+                       required>
+                <mat-icon matPrefix>lock_reset</mat-icon>
+                <button mat-icon-button matSuffix 
+                        type="button"
+                        (click)="showConfirmPassword = !showConfirmPassword">
+                  <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="securityForm.get('confirmPassword')?.hasError('required')">
+                  Please confirm your password
+                </mat-error>
+                <mat-error *ngIf="securityForm.hasError('passwordMismatch') && 
+                                 securityForm.get('confirmPassword')?.touched">
+                  Passwords do not match
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-actions">
+              <button mat-raised-button color="primary" type="submit" [disabled]="securityForm.invalid || saving">
+                <mat-icon>vpn_key</mat-icon>
+                {{ saving ? 'Changing Password...' : 'Change Password' }}
+              </button>
+            </div>
+          </form>
+
+          <mat-divider class="section-divider"></mat-divider>
+
+          <!-- Two-Factor Authentication -->
+          <div class="security-section">
+            <h3 class="section-title">
+              <mat-icon>security</mat-icon>
+              Two-Factor Authentication
+            </h3>
+            <p class="section-description">Add an extra layer of security to your account</p>
+            <button mat-stroked-button color="primary">
+              <mat-icon>add_circle</mat-icon>
+              Enable Two-Factor Authentication
+            </button>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Notifications Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">notifications</mat-icon>
+          <span>Notifications</span>
+        </ng-template>
+        
+        <div class="tab-content">
+          <h2 class="tab-title">Notification Preferences</h2>
+          <p class="tab-description">Choose how you want to receive notifications</p>
+
+          <form [formGroup]="notificationsForm" (ngSubmit)="updateNotifications()">
+            <div class="notifications-grid">
+              <!-- Email Notifications -->
+              <div class="notification-category">
+                <h3 class="category-title">
+                  <mat-icon>email</mat-icon>
+                  Email Notifications
+                </h3>
+                <div formGroupName="email" class="notification-options">
+                  <mat-slide-toggle formControlName="leaveApprovals">
+                    Leave Approvals & Updates
+                  </mat-slide-toggle>
+                  <mat-slide-toggle formControlName="timesheetReminders">
+                    Timesheet Reminders
+                  </mat-slide-toggle>
+                  <mat-slide-toggle formControlName="documentUploads">
+                    Document Uploads
+                  </mat-slide-toggle>
+                  <mat-slide-toggle formControlName="systemAnnouncements">
+                    System Announcements
+                  </mat-slide-toggle>
+                </div>
+              </div>
+
+              <!-- Push Notifications -->
+              <div class="notification-category">
+                <h3 class="category-title">
+                  <mat-icon>notifications_active</mat-icon>
+                  Push Notifications
+                </h3>
+                <div formGroupName="push" class="notification-options">
+                  <mat-slide-toggle formControlName="leaveApprovals">
+                    Leave Approvals & Updates
+                  </mat-slide-toggle>
+                  <mat-slide-toggle formControlName="timesheetReminders">
+                    Timesheet Reminders
+                  </mat-slide-toggle>
+                  <mat-slide-toggle formControlName="documentUploads">
+                    Document Uploads
+                  </mat-slide-toggle>
+                  <mat-slide-toggle formControlName="systemAnnouncements">
+                    System Announcements
+                  </mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button mat-raised-button color="primary" type="submit" [disabled]="notificationsForm.invalid || saving">
+                <mat-icon>save</mat-icon>
+                {{ saving ? 'Saving...' : 'Save Notification Settings' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
+</div>

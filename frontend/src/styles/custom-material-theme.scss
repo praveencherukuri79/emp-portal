@@ -1,0 +1,370 @@
+/**
+ * Custom Material Design Theme for Employee Portal
+ * Professional corporate theme with proper branding
+ */
+
+@use '@angular/material' as mat;
+
+// ============================================================================
+// Custom Color Palettes
+// ============================================================================
+
+// Primary Palette - Professional Blue
+$emp-portal-primary: mat.define-palette((
+  50: #e3f2fd,
+  100: #bbdefb,
+  200: #90caf9,
+  300: #64b5f6,
+  400: #42a5f5,
+  500: #2196f3,  // Main brand color
+  600: #1e88e5,
+  700: #1976d2,
+  800: #1565c0,
+  900: #0d47a1,
+  A100: #82b1ff,
+  A200: #448aff,
+  A400: #2979ff,
+  A700: #2962ff,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(white, 0.87),
+    600: rgba(white, 0.87),
+    700: rgba(white, 0.87),
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(white, 0.87),
+    A400: rgba(white, 0.87),
+    A700: rgba(white, 0.87),
+  )
+));
+
+// Accent Palette - Professional Teal
+$emp-portal-accent: mat.define-palette((
+  50: #e0f2f1,
+  100: #b2dfdb,
+  200: #80cbc4,
+  300: #4db6ac,
+  400: #26a69a,
+  500: #009688,  // Main accent color
+  600: #00897b,
+  700: #00796b,
+  800: #00695c,
+  900: #004d40,
+  A100: #a7ffeb,
+  A200: #64ffda,
+  A400: #1de9b6,
+  A700: #00bfa5,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(white, 0.87),
+    600: rgba(white, 0.87),
+    700: rgba(white, 0.87),
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: rgba(black, 0.87),
+  )
+));
+
+// Warn Palette - Professional Red
+$emp-portal-warn: mat.define-palette((
+  50: #ffebee,
+  100: #ffcdd2,
+  200: #ef9a9a,
+  300: #e57373,
+  400: #ef5350,
+  500: #f44336,  // Main warning color
+  600: #e53935,
+  700: #d32f2f,
+  800: #c62828,
+  900: #b71c1c,
+  A100: #ff8a80,
+  A200: #ff5252,
+  A400: #ff1744,
+  A700: #d50000,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(white, 0.87),
+    600: rgba(white, 0.87),
+    700: rgba(white, 0.87),
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(white, 0.87),
+    A400: rgba(white, 0.87),
+    A700: rgba(white, 0.87),
+  )
+));
+
+// ============================================================================
+// Theme Configuration
+// ============================================================================
+
+// Light Theme
+$emp-portal-light-theme: mat.define-light-theme((
+  color: (
+    primary: $emp-portal-primary,
+    accent: $emp-portal-accent,
+    warn: $emp-portal-warn,
+  ),
+  typography: mat.define-typography-config(
+    $font-family: '"Inter", "Roboto", "Helvetica Neue", Arial, sans-serif',
+    $headline-1: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+    $headline-2: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+    $headline-3: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+    $headline-4: mat.define-typography-level(34px, 40px, 400),
+    $headline-5: mat.define-typography-level(24px, 32px, 500),
+    $headline-6: mat.define-typography-level(20px, 32px, 500),
+    $subtitle-1: mat.define-typography-level(16px, 28px, 500),
+    $subtitle-2: mat.define-typography-level(14px, 22px, 600),
+    $body-1: mat.define-typography-level(16px, 24px, 400),
+    $body-2: mat.define-typography-level(14px, 20px, 400),
+    $button: mat.define-typography-level(14px, 14px, 600),
+    $caption: mat.define-typography-level(12px, 20px, 400),
+    $overline: mat.define-typography-level(10px, 16px, 400),
+  ),
+  density: 0,
+));
+
+// Dark Theme
+$emp-portal-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $emp-portal-primary,
+    accent: $emp-portal-accent,
+    warn: $emp-portal-warn,
+  ),
+  typography: mat.define-typography-config(
+    $font-family: '"Inter", "Roboto", "Helvetica Neue", Arial, sans-serif',
+  ),
+  density: 0,
+));
+
+// ============================================================================
+// Theme Application
+// ============================================================================
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+@include mat.core();
+
+// Apply the light theme by default
+@include mat.all-component-themes($emp-portal-light-theme);
+
+// Apply dark theme when .dark-theme class is present
+.dark-theme {
+  @include mat.all-component-colors($emp-portal-dark-theme);
+}
+
+// ============================================================================
+// Component Customizations
+// ============================================================================
+
+// Toolbar customization
+.mat-toolbar {
+  &.primary-toolbar {
+    background: linear-gradient(135deg, mat.get-color-from-palette($emp-portal-primary, 600), mat.get-color-from-palette($emp-portal-primary, 500));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Sidenav customization
+.mat-sidenav {
+  &.main-sidenav {
+    background: #fafafa;
+    border-right: 1px solid #e0e0e0;
+    
+    .dark-theme & {
+      background: #2d2d2d;
+      border-right: 1px solid #424242;
+    }
+  }
+}
+
+// Card customization
+.mat-card {
+  &.feature-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    
+    &:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// Button customization
+.mat-fab, .mat-mini-fab {
+  &.primary-fab {
+    background: linear-gradient(135deg, mat.get-color-from-palette($emp-portal-primary, 500), mat.get-color-from-palette($emp-portal-accent, 500));
+    box-shadow: 0 4px 12px rgba(mat.get-color-from-palette($emp-portal-primary, 500), 0.3);
+  }
+}
+
+// Form field customization
+.mat-form-field {
+  &.professional-field {
+    .mat-form-field-outline {
+      border-radius: 8px;
+    }
+    
+    .mat-form-field-label {
+      color: #666;
+    }
+    
+    &.mat-focused {
+      .mat-form-field-label {
+        color: mat.get-color-from-palette($emp-portal-primary, 600);
+      }
+    }
+  }
+}
+
+// Table customization
+.mat-table {
+  &.professional-table {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    
+    .mat-header-row {
+      background: #f8f9fa;
+      
+      .mat-header-cell {
+        color: #495057;
+        font-weight: 600;
+        border-bottom: 2px solid #e9ecef;
+      }
+    }
+    
+    .mat-row {
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: #f8f9fa;
+      }
+      
+      &:nth-child(even) {
+        background-color: #fdfdfd;
+      }
+    }
+  }
+}
+
+// Navigation customization
+.nav-item {
+  &.active {
+    background: linear-gradient(135deg, 
+      rgba(mat.get-color-from-palette($emp-portal-primary, 500), 0.1),
+      rgba(mat.get-color-from-palette($emp-portal-accent, 500), 0.05)
+    );
+    border-right: 3px solid mat.get-color-from-palette($emp-portal-primary, 500);
+  }
+}
+
+// ============================================================================
+// Custom CSS Properties for Theme Variables
+// ============================================================================
+
+:root {
+  // Primary colors
+  --color-primary-50: #{mat.get-color-from-palette($emp-portal-primary, 50)};
+  --color-primary-100: #{mat.get-color-from-palette($emp-portal-primary, 100)};
+  --color-primary-200: #{mat.get-color-from-palette($emp-portal-primary, 200)};
+  --color-primary-300: #{mat.get-color-from-palette($emp-portal-primary, 300)};
+  --color-primary-400: #{mat.get-color-from-palette($emp-portal-primary, 400)};
+  --color-primary-500: #{mat.get-color-from-palette($emp-portal-primary, 500)};
+  --color-primary-600: #{mat.get-color-from-palette($emp-portal-primary, 600)};
+  --color-primary-700: #{mat.get-color-from-palette($emp-portal-primary, 700)};
+  --color-primary-800: #{mat.get-color-from-palette($emp-portal-primary, 800)};
+  --color-primary-900: #{mat.get-color-from-palette($emp-portal-primary, 900)};
+  
+  // Accent colors
+  --color-accent-50: #{mat.get-color-from-palette($emp-portal-accent, 50)};
+  --color-accent-100: #{mat.get-color-from-palette($emp-portal-accent, 100)};
+  --color-accent-200: #{mat.get-color-from-palette($emp-portal-accent, 200)};
+  --color-accent-300: #{mat.get-color-from-palette($emp-portal-accent, 300)};
+  --color-accent-400: #{mat.get-color-from-palette($emp-portal-accent, 400)};
+  --color-accent-500: #{mat.get-color-from-palette($emp-portal-accent, 500)};
+  --color-accent-600: #{mat.get-color-from-palette($emp-portal-accent, 600)};
+  --color-accent-700: #{mat.get-color-from-palette($emp-portal-accent, 700)};
+  --color-accent-800: #{mat.get-color-from-palette($emp-portal-accent, 800)};
+  --color-accent-900: #{mat.get-color-from-palette($emp-portal-accent, 900)};
+  
+  // Semantic colors
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-danger: #{mat.get-color-from-palette($emp-portal-warn, 500)};
+  --color-info: #{mat.get-color-from-palette($emp-portal-primary, 400)};
+  
+  // Neutral colors
+  --color-white: #ffffff;
+  --color-gray-50: #f8f9fa;
+  --color-gray-100: #f1f3f4;
+  --color-gray-200: #e8eaed;
+  --color-gray-300: #dadce0;
+  --color-gray-400: #bdc1c6;
+  --color-gray-500: #9aa0a6;
+  --color-gray-600: #80868b;
+  --color-gray-700: #5f6368;
+  --color-gray-800: #3c4043;
+  --color-gray-900: #202124;
+  
+  // Typography
+  --font-family-primary: "Inter", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  // Spacing
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  // Border radius
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  
+  // Shadows
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+}
+
+// Dark theme CSS properties
+.dark-theme {
+  --color-gray-50: #202124;
+  --color-gray-100: #3c4043;
+  --color-gray-200: #5f6368;
+  --color-gray-300: #80868b;
+  --color-gray-400: #9aa0a6;
+  --color-gray-500: #bdc1c6;
+  --color-gray-600: #dadce0;
+  --color-gray-700: #e8eaed;
+  --color-gray-800: #f1f3f4;
+  --color-gray-900: #f8f9fa;
+}

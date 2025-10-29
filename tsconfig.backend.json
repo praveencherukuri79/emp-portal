@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "outDir": "./backend/dist",
+    "rootDir": "./backend/src",
+    "baseUrl": "backend/",
+    "declaration": true,
+    "declarationMap": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["backend/src/**/*"],
+  "exclude": ["node_modules", "frontend", "backend/dist", "**/*.spec.ts"]
+}

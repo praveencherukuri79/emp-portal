@@ -1,0 +1,25 @@
+@import 'styles/mixins';
+
+// Team stats component - NO IMPORTS
+.team-stats {
+  @include grid-responsive(3, 2, 1);
+  gap: var(--spacing-lg);
+  
+  .stat-card {
+    @include card-base;
+    padding: var(--spacing-lg);
+    text-align: center;
+    
+    .stat-value {
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      color: var(--primary-600);
+    }
+    
+    .stat-label {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin-top: var(--spacing-xs);
+    }
+  }
+}

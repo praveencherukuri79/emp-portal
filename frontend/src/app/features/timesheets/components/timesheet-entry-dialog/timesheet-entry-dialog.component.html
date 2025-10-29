@@ -1,0 +1,117 @@
+<div class="timesheet-entry-dialog" [attr.data-mode]="isEditMode ? 'edit' : 'create'">
+  <div class="dialog-header">
+    <mat-icon>{{ isEditMode ? 'edit' : 'add' }}</mat-icon>
+    <h2>{{ isEditMode ? 'Edit Time Entry' : 'Add Time Entry' }}</h2>
+    <button mat-icon-button (click)="onCancel()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="entryForm" (ngSubmit)="onSave()" class="dialog-form">
+    <div class="form-content">
+      <!-- Date and Project Row -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Date</mat-label>
+          <input matInput type="date" formControlName="date" [max]="getToday()">
+          <mat-error>{{ getFieldError('date') }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Project</mat-label>
+          <mat-select formControlName="projectId">
+            <mat-option value="">Select a project</mat-option>
+            @for (project of projects; track project.id) {
+              <mat-option [value]="project.id">
+                {{ project.name }}
+                @if (project.clientName) {
+                  <span class="project-client"> - {{ project.clientName }}</span>
+                }
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>{{ getFieldError('projectId') }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Time Row -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Start Time</mat-label>
+          <input matInput type="time" formControlName="startTime">
+          <mat-error>{{ getFieldError('startTime') }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>End Time</mat-label>
+          <input matInput type="time" formControlName="endTime">
+          <mat-error>{{ getFieldError('endTime') }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Break (minutes)</mat-label>
+          <input matInput type="number" formControlName="breakDuration" min="0" max="480">
+          <mat-error>{{ getFieldError('breakDuration') }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Duration Display -->
+      <div class="duration-display">
+        <mat-icon>schedule</mat-icon>
+        <span class="duration-text">
+          Total Duration: <strong>{{ getFormattedDuration() }}</strong>
+        </span>
+      </div>
+
+      <!-- Description -->
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Description</mat-label>
+        <textarea 
+          matInput 
+          formControlName="description" 
+          rows="3" 
+          placeholder="Describe the work performed during this time period...">
+        </textarea>
+        <mat-hint align="end">
+          {{ entryForm.get('description')?.value?.length || 0 }}/500
+        </mat-hint>
+        <mat-error>{{ getFieldError('description') }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="dialog-actions">
+      <div class="action-left">
+        @if (isEditMode) {
+          <button 
+            mat-button 
+            type="button" 
+            color="warn" 
+            (click)="onDelete()" 
+            [disabled]="loading"
+            class="delete-button">
+            <mat-icon>delete</mat-icon>
+            Delete Entry
+          </button>
+        }
+      </div>
+
+      <div class="action-right">
+        <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+          Cancel
+        </button>
+        <button 
+          mat-raised-button 
+          type="submit" 
+          color="primary" 
+          [disabled]="!entryForm.valid || loading">
+          @if (loading) {
+            <mat-spinner diameter="16"></mat-spinner>
+          } @else {
+            <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+          }
+          {{ isEditMode ? 'Update Entry' : 'Add Entry' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
