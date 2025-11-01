@@ -1,0 +1,89 @@
+/**
+ * Typography Base Styles
+ */
+
+body {
+  font-family: var(--type-family-sans);
+  font-size: var(--type-size-base);
+  font-weight: var(--type-weight-normal);
+  line-height: var(--type-leading-normal);
+  color: var(--role-text-primary);
+  background-color: var(--role-surface-primary);
+}
+
+// Headings
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--type-weight-semibold);
+  line-height: var(--type-leading-tight);
+  color: var(--role-text-primary);
+}
+
+h1 {
+  font-size: var(--type-size-4xl);
+  margin-bottom: var(--spacing-6);
+}
+
+h2 {
+  font-size: var(--type-size-3xl);
+  margin-bottom: var(--spacing-5);
+}
+
+h3 {
+  font-size: var(--type-size-2xl);
+  margin-bottom: var(--spacing-4);
+}
+
+h4 {
+  font-size: var(--type-size-xl);
+  margin-bottom: var(--spacing-3);
+}
+
+h5 {
+  font-size: var(--type-size-lg);
+  margin-bottom: var(--spacing-2);
+}
+
+h6 {
+  font-size: var(--type-size-base);
+  margin-bottom: var(--spacing-2);
+}
+
+// Paragraphs
+p {
+  margin-bottom: var(--spacing-4);
+  color: var(--role-text-secondary);
+}
+
+// Small text
+small {
+  font-size: var(--type-size-sm);
+  color: var(--role-text-tertiary);
+}
+
+// Code
+code {
+  font-family: var(--type-family-mono);
+  font-size: var(--type-size-sm);
+  padding: var(--spacing-1) var(--spacing-2);
+  background-color: var(--role-surface-tertiary);
+  border-radius: var(--fx-radius-sm);
+}
+
+// Links
+a {
+  color: var(--role-interactive-primary);
+  transition: color var(--fx-transition-base) var(--fx-easing-default);
+  
+  &:hover {
+    color: var(--role-interactive-hover);
+  }
+  
+  &:active {
+    color: var(--role-interactive-active);
+  }
+}
+
+// Strong/Bold
+strong, b {
+  font-weight: var(--type-weight-semibold);
+}
