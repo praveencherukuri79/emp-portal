@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, inject } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { TimesheetService } from '@core/services/timesheet.service';
+import { ErrorHandlerService } from '@shared/services/error-handler.service';
 import { ApprovalDialogComponent } from '../approval-dialog/approval-dialog.component';
 
 interface TimesheetApproval {
@@ -36,6 +37,7 @@ export class TimesheetApprovalsComponent implements OnInit {
   dataSource: MatTableDataSource<TimesheetApproval>;
   loading = false;
   error: string | null = null;
+  private errorHandler = inject(ErrorHandlerService);
 
   constructor(
     private timesheetService: TimesheetService,
@@ -58,14 +60,34 @@ export class TimesheetApprovalsComponent implements OnInit {
     this.error = null;
 
     this.timesheetService.getPendingTimesheets().subscribe({
-      next: (timesheets) => {
-        this.dataSource.data = timesheets as any;
-        this.countChange.emit(timesheets.length);
+      next: (timesheets: any[]) => {
+        // Normalize backend data to UI model
+        const mapped: TimesheetApproval[] = (timesheets || []).map((ts: any) => {
+          const user = ts.user || ts.userId || {};
+          return {
+            _id: ts._id,
+            user: {
+              _id: user._id,
+              firstName: user.firstName || '',
+              lastName: user.lastName || '',
+              email: user.email || ''
+            },
+            date: new Date(ts.date),
+            hours: ts.hours ?? ts.totalHours ?? 0,
+            project: ts.project ?? ts.projectName ?? '—',
+            description: ts.description ?? ts.taskDescription ?? ts.notes ?? '—',
+            status: ts.status || 'submitted',
+            submittedAt: ts.submittedAt ? new Date(ts.submittedAt) : (ts.updatedAt ? new Date(ts.updatedAt) : new Date(ts.date))
+          };
+        });
+        this.dataSource.data = mapped;
+        this.countChange.emit(mapped.length);
         this.loading = false;
       },
       error: (err) => {
         console.error('Error loading pending timesheets:', err);
-        this.error = 'Failed to load pending timesheets. Please try again.';
+        this.error = this.errorHandler.getMessage(err, 'Failed to load pending timesheets. Please try again.');
+        this.errorHandler.show(err);
         this.loading = false;
         this.countChange.emit(0);
       }

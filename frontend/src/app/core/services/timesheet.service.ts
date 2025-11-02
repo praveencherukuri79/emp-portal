@@ -81,9 +81,9 @@ export class TimesheetService {
   /**
    * Create single timesheet entry
    */
-  createEntry(entry: Partial<TimesheetEntry>): Observable<TimesheetEntry> {
+  createTimesheet(data: Partial<TimesheetEntry>): Observable<TimesheetEntry> {
     this.loading.set(true);
-    return this.http.post<ApiResponse<TimesheetEntry>>(this.apiUrl, entry).pipe(
+    return this.http.post<ApiResponse<TimesheetEntry>>(this.apiUrl, data).pipe(
       map(response => response.data || response as any),
       tap(() => {
         this.loading.set(false);
@@ -99,16 +99,17 @@ export class TimesheetService {
   /**
    * Create multiple timesheet entries (batch)
    */
-  createTimesheet(data: TimesheetBatchRequest): Observable<TimesheetEntry[]> {
+  createTimesheetBatch(data: TimesheetBatchRequest): Observable<TimesheetEntry[]> {
     this.loading.set(true);
-    return this.http.post<TimesheetEntry[]>(this.apiUrl, data).pipe(
+    return this.http.post<ApiResponse<TimesheetEntry[]>>(`${this.apiUrl}/batch`, data).pipe(
+      map(response => response.data || response as any || []),
       tap(() => {
         this.loading.set(false);
         this.triggerRefresh();
       }),
       catchError((error) => {
         this.loading.set(false);
-        return this.handleError<TimesheetEntry[]>('createTimesheet', [])(error);
+        return this.handleError<TimesheetEntry[]>('createTimesheetBatch', [])(error);
       })
     );
   }
@@ -231,12 +232,14 @@ export class TimesheetService {
    */
   calculateTotalHours(entries: TimesheetEntry[]): number {
     return entries.reduce((total, entry) => {
-      if (entry.totalHours) {
+      if (typeof entry.totalHours === 'number') {
         return total + entry.totalHours;
       } else if (entry.startTime && entry.endTime) {
         const hours = DateUtil.calculateHours(entry.startTime, entry.endTime);
         const breakHours = (entry.breakDuration || 0) / 60;
         return total + Math.max(0, hours - breakHours);
+      } else if (typeof entry.hours === 'number') {
+        return total + Math.max(0, entry.hours);
       }
       return total;
     }, 0);

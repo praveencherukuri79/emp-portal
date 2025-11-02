@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { LayoutComponent } from './core/components/layout/layout.component';
+import { StartRouteGuard } from './core/guards/start-route.guard';
 import { UserRole } from './shared/models/enums';
 
 const routes: Routes = [
@@ -93,8 +94,8 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full'
+        canActivate: [StartRouteGuard],
+        children: []
       }
     ]
   },

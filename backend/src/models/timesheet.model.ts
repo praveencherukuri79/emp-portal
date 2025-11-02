@@ -13,6 +13,7 @@ export interface ITimesheet extends Document {
   rejectionReason?: string;
   billable: boolean;
   notes?: string;
+  submittedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,6 +36,7 @@ const TimesheetSchema: Schema = new Schema(
     rejectionReason: { type: String },
     billable: { type: Boolean, default: true },
     notes: { type: String },
+    submittedAt: { type: Date },
   },
   { timestamps: true }
 );

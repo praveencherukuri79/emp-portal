@@ -91,7 +91,8 @@ export class LoginComponent implements OnInit {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
-          this.router.navigate(['/dashboard']);
+          // Navigate to role-based start route (employees -> timesheets, supervisors+ -> approvals)
+          this.router.navigate(['/']);
         },
         error: (error) => {
           this.loading.set(false);

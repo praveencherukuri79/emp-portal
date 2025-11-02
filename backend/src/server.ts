@@ -107,7 +107,7 @@ class Server {
     this.app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
     // Rate limiting
-    this.app.use('/api', rateLimiter);
+    //this.app.use('/api', rateLimiter);
   }
 
   private async connectDatabase(): Promise<void> {

@@ -128,7 +128,7 @@
       
       .welcome-subtitle {
         font-size: var(--type-size-lg);
-        color: rgba(255, 255, 255, 0.9);
+        color: color-mix(in srgb, var(--role-text-inverse) 90%, transparent);
         margin: 0;
         font-weight: var(--type-weight-medium);
       }
@@ -146,10 +146,10 @@
         align-items: center;
         gap: var(--spacing-5);
         padding: var(--spacing-6);
-        background: rgba(255, 255, 255, 0.15);
+        background: color-mix(in srgb, var(--role-surface-inverse) 15%, transparent);
         backdrop-filter: blur(10px);
         border-radius: var(--fx-radius-xl);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid color-mix(in srgb, var(--role-surface-inverse) 25%, transparent);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
@@ -171,8 +171,8 @@
         &:hover {
           transform: translateY(-6px);
           box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
-          border-color: rgba(255, 255, 255, 0.4);
-          background: rgba(255, 255, 255, 0.2);
+          border-color: color-mix(in srgb, var(--role-surface-inverse) 40%, transparent);
+          background: color-mix(in srgb, var(--role-surface-inverse) 20%, transparent);
           
           &::before {
             opacity: 1;
@@ -192,7 +192,7 @@
           width: 64px;
           height: 64px;
           border-radius: var(--fx-radius-xl);
-          background: rgba(255, 255, 255, 0.25);
+          background: color-mix(in srgb, var(--role-surface-inverse) 25%, transparent);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -224,7 +224,7 @@
           
           .stat-label {
             font-size: var(--type-size-sm);
-            color: rgba(255, 255, 255, 0.85);
+            color: color-mix(in srgb, var(--role-text-inverse) 85%, transparent);
             font-weight: var(--type-weight-medium);
             text-transform: capitalize;
           }

@@ -210,9 +210,15 @@
         font-weight: 600;
         cursor: pointer;
         min-height: 48px;
+        transition: background 0.2s ease, opacity 0.2s ease;
         
         &:hover {
           background: var(--primary-700);
+        }
+        &:disabled,
+        &.loading {
+          opacity: 0.8;
+          cursor: not-allowed;
         }
         
         .btn-arrow {

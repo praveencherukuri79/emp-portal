@@ -20,14 +20,16 @@ export interface TimesheetEntry {
   id: string;
   userId: string;
   date: string;
-  startTime: string;
-  endTime: string;
+  startTime?: string;
+  endTime?: string;
   breakDuration?: number; // minutes
   projectId?: string;
   projectName?: string;
   description?: string;
+  taskDescription?: string; // backend field name
+  hours?: number; // hours-only entries
   status: 'draft' | 'submitted' | 'approved' | 'rejected';
-  totalHours: number;
+  totalHours?: number;
   createdAt: string;
   updatedAt: string;
 }

@@ -118,15 +118,19 @@ export class TimesheetEntryDialogComponent implements OnInit {
       this.loading = true;
       
       const formValue = this.entryForm.value;
+      const projectName = this.projects.find(p => p.id === formValue.projectId)?.name || undefined;
       const entryData = {
-        ...formValue,
-        totalHours: this.getTotalHours(),
+        date: formValue.date,
+        projectName,
+        taskDescription: formValue.description,
+        hours: this.getTotalHours(),
+        billable: true,
         status: 'draft' as const
       };
 
       const operation = this.isEditMode
         ? this.timesheetService.updateEntry(this.data.entry!.id, entryData)
-        : this.timesheetService.createEntry(entryData);
+        : this.timesheetService.createTimesheet(entryData);
 
       operation.subscribe({
         next: (entry) => {

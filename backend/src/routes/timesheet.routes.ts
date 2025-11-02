@@ -71,6 +71,31 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
+// Create multiple timesheet entries (batch)
+router.post('/batch', async (req: Request, res: Response) => {
+  try {
+    const { project, description, entries } = req.body || {};
+    if (!Array.isArray(entries) || entries.length === 0) {
+      return res.status(400).json({ message: 'entries array is required' });
+    }
+
+    // Map incoming minimal entries to model-required fields
+    const docs = entries.map((e: any) => ({
+      date: new Date(e.date),
+      hours: Number(e.hours) || 0,
+      billable: e.billable !== undefined ? !!e.billable : true,
+      taskDescription: description || 'Work hours',
+      projectName: project || undefined,
+      status: 'draft'
+    }));
+
+    const created = await timesheetService.createBatchTimesheets(docs, req.user!.userId, req.user!.tenantId);
+    res.status(201).json({ success: true, data: created });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Error creating batch timesheets', error: error.message });
+  }
+});
+
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const timesheet = await timesheetService.updateTimesheet(req.params.id, req.body, req.user!.userId, req.user!.tenantId);

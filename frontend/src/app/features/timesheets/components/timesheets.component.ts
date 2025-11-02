@@ -5,9 +5,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { TimesheetService } from '@core/services/timesheet.service';
 import { DialogService } from '@shared/services/dialog.service';
 import { ThemeService } from '@core/services/theme.service';
-import { TimesheetEntry, TimesheetSummary } from '@shared/types';
+import { TimesheetEntry, TimesheetSummary, Project } from '@shared/types';
 import { DateUtil } from '@shared/utils/date.util';
 import { TimesheetEntryDialogComponent, TimesheetEntryDialogData } from './timesheet-entry-dialog/timesheet-entry-dialog.component';
+import { ErrorHandlerService } from '@shared/services/error-handler.service';
 
 @Component({
   selector: 'app-timesheets',
@@ -23,16 +24,27 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
   private dialogService = inject(DialogService);
   private snackBar = inject(MatSnackBar);
   private themeService = inject(ThemeService);
+  private errorHandler = inject(ErrorHandlerService);
 
   // Component state
   currentWeekSummary: TimesheetSummary | null = null;
   weekEntries: TimesheetEntry[] = [];
   loading = true;
   submitting = false;
+  submittingWeek = false;
   
   // Current week dates
   currentWeekRange = DateUtil.getCurrentWeekRange();
   weekDays: Array<{ date: Date; dayName: string; dateString: string; entry?: TimesheetEntry }> = [];
+
+  // Weekly entry state (hours-only flow)
+  projects: Project[] = [];
+  selectedProjectId: string | null = null;
+  billable = true;
+  description = '';
+  weekHours: Record<string, number> = {}; // key: dateString, value: hours
+  // Quick-jump past weeks list (last 12 weeks)
+  lastWeeks: Array<{ label: string; start: string; end: string }> = [];
 
   // Theme
   currentTheme = this.themeService.currentTheme;
@@ -41,7 +53,9 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeWeekDays();
     this.loadWeekData();
+    this.loadProjects();
     this.setupRefreshListener();
+    this.buildLastWeeks();
   }
 
   ngOnDestroy(): void {
@@ -62,6 +76,10 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
         dayName: date.toLocaleDateString('en-US', { weekday: 'short' }),
         dateString: DateUtil.formatForInput(date)
       });
+
+      // Initialize weekly hours to 0 by default
+      const key = DateUtil.formatForInput(date);
+      this.weekHours[key] = this.weekHours[key] ?? 0;
     }
   }
 
@@ -79,7 +97,15 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           // Handle both direct array and ApiResponse wrapper
           const entries = Array.isArray(response) ? response : (response?.data || []);
-          this.weekEntries = Array.isArray(entries) ? entries : [];
+          const all = Array.isArray(entries) ? entries : [];
+          // Filter strictly by current week range using local date strings
+          const startStr = DateUtil.formatForInput(start);
+          const endStr = DateUtil.formatForInput(end);
+          this.weekEntries = all.filter((e: any) => {
+            const d = typeof e.date === 'string' ? new Date(e.date) : new Date(e.date);
+            const ds = DateUtil.formatForInput(d);
+            return ds >= startStr && ds <= endStr;
+          });
           
           // Calculate summary from actual entries
           const totalHours = this.timesheetService.calculateTotalHours(this.weekEntries);
@@ -97,6 +123,7 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
           };
           
           this.mapEntriesToDays();
+          this.seedWeekHoursFromEntries();
           this.loading = false;
         },
         error: (error) => {
@@ -104,14 +131,25 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
           this.weekEntries = [];
           this.currentWeekSummary = null;
           this.loading = false;
-          
-          const errorMessage = error?.error?.message || error?.message || 'Failed to load timesheet data. Please try again.';
-          this.snackBar.open(errorMessage, 'Close', { 
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
+          this.errorHandler.show(error ?? 'Failed to load timesheet data.');
         }
       });
+  }
+
+  private loadProjects(): void {
+    this.timesheetService.getProjects().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (projects) => {
+        this.projects = projects || [];
+        // Auto-select first active project for convenience
+        if (!this.selectedProjectId && this.projects.length) {
+          this.selectedProjectId = this.projects[0].id;
+        }
+      },
+      error: () => {
+        // Non-blocking; weekly entry can still allow saving if backend accepts empty project
+        this.projects = [];
+      }
+    });
   }
 
   private calculateOverallStatus(entries: TimesheetEntry[]): 'draft' | 'submitted' | 'approved' | 'rejected' {
@@ -141,6 +179,18 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
           : DateUtil.formatForInput(new Date(entry.date));
         return entryDate === day.dateString;
       });
+    });
+  }
+
+  private seedWeekHoursFromEntries(): void {
+    if (!Array.isArray(this.weekEntries)) return;
+    // If there is exactly one entry per day (common case), seed hours from it
+    this.weekEntries.forEach(e => {
+      const key = typeof e.date === 'string' ? e.date : DateUtil.formatForInput(new Date(e.date));
+      const hours = (e.totalHours as number | undefined) ?? (e as any).hours ?? 0;
+      if (key) {
+        this.weekHours[key] = hours;
+      }
     });
   }
 
@@ -262,9 +312,55 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
     this.loadWeekData();
   }
 
+  // ==========================
+  // Weekly hours-only entry
+  // ==========================
+  weekTotal(): number {
+    return Object.values(this.weekHours).reduce((sum, v) => sum + (Number(v) || 0), 0);
+  }
+
+  saveWeekHours(): void {
+    if (this.submittingWeek) return;
+
+    const entries = this.weekDays
+      .map(d => ({ date: d.dateString, hours: Number(this.weekHours[d.dateString]) || 0 }))
+      .filter(e => e.hours > 0)
+      .map(e => ({ date: e.date, hours: e.hours, billable: this.billable }));
+
+    if (!entries.length) {
+      this.snackBar.open('Enter hours for at least one day', 'Close', { duration: 3000 });
+      return;
+    }
+
+    if (!this.selectedProjectId) {
+      this.snackBar.open('Please select a project', 'Close', { duration: 3000 });
+      return;
+    }
+
+    // Map selected project id to project name for backend compatibility
+    const projectName = this.projects.find(p => p.id === this.selectedProjectId)?.name || '';
+
+    this.submittingWeek = true;
+    this.timesheetService.createTimesheetBatch({
+      project: projectName,
+      entries,
+      description: this.description || ''
+    }).subscribe({
+      next: () => {
+        this.submittingWeek = false;
+        this.snackBar.open('Week hours saved', 'Close', { duration: 2500 });
+        this.loadWeekData();
+      },
+      error: (error) => {
+        this.submittingWeek = false;
+        this.errorHandler.show(error ?? 'Failed to save hours');
+      }
+    });
+  }
+
   // Utility methods
   formatDuration(hours: number): string {
-    return DateUtil.formatDuration(hours);
+    return DateUtil.formatDuration(Number(hours) || 0);
   }
 
   getEntryStatus(entry: TimesheetEntry): { text: string; class: string } {
@@ -311,5 +407,77 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
       console.error('Invalid date:', dateString, e);
       return false;
     }
+  }
+
+  // ==========================
+  // Week navigation
+  // ==========================
+  prevWeek(): void {
+    const start = new Date(this.currentWeekRange.start);
+    start.setDate(start.getDate() - 7);
+    this.setWeek(start);
+  }
+
+  nextWeek(): void {
+    const start = new Date(this.currentWeekRange.start);
+    start.setDate(start.getDate() + 7);
+    this.setWeek(start);
+  }
+
+  goToCurrentWeek(): void {
+    const now = new Date();
+    this.setWeek(now);
+  }
+
+  private setWeek(anchorDate: Date): void {
+    // Compute new week range based on the given date (Mon-Sun)
+    const week = {
+      start: new Date(anchorDate),
+      end: new Date(anchorDate)
+    };
+    // Align to Monday and Sunday
+    const day = week.start.getDay();
+    const diffToMonday = (day === 0 ? -6 : 1 - day); // 0=Sun -> -6, 1=Mon -> 0, ...
+    week.start.setDate(week.start.getDate() + diffToMonday);
+    week.start.setHours(0, 0, 0, 0);
+    const end = new Date(week.start);
+    end.setDate(week.start.getDate() + 6);
+    end.setHours(23, 59, 59, 999);
+    week.end = end;
+
+    this.currentWeekRange = week;
+    this.weekHours = {};
+    this.initializeWeekDays();
+    this.loadWeekData();
+    this.buildLastWeeks();
+  }
+
+  private buildLastWeeks(): void {
+    // Build last 12 weeks (including current)
+    const list: Array<{ label: string; start: string; end: string }> = [];
+    const now = new Date();
+    // align to Monday
+    const day = now.getDay();
+    const diffToMonday = (day === 0 ? -6 : 1 - day);
+    const monday = new Date(now);
+    monday.setDate(now.getDate() + diffToMonday);
+    monday.setHours(0, 0, 0, 0);
+
+    for (let i = 0; i < 12; i++) {
+      const start = new Date(monday);
+      start.setDate(monday.getDate() - i * 7);
+      const end = new Date(start);
+      end.setDate(start.getDate() + 6);
+      const label = `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+      list.push({ label, start: DateUtil.formatForInput(start), end: DateUtil.formatForInput(end) });
+    }
+
+    this.lastWeeks = list;
+  }
+
+  jumpToWeek(startStr: string): void {
+    if (!startStr) return;
+    const d = new Date(startStr);
+    this.setWeek(d);
   }
 }
