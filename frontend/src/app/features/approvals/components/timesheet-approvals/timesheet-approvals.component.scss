@@ -71,7 +71,7 @@
           &:focus {
             outline: none;
             border-color: var(--primary-500);
-            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-500) 15%, transparent);
           }
         }
       }
@@ -92,7 +92,7 @@
     transition: all 0.3s ease;
     
     &:hover {
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+      box-shadow: var(--fx-shadow-lg);
     }
     
     // Approval Header

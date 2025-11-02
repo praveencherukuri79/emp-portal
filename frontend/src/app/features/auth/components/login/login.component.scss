@@ -15,14 +15,14 @@
     right: var(--spacing-lg);
     width: 48px;
     height: 48px;
-    background: rgba(255, 255, 255, 0.9);
+  background: color-mix(in srgb, var(--role-text-inverse) 90%, transparent);
     border: none;
     border-radius: var(--radius-full);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--fx-shadow-sm);
     transition: all 0.2s ease;
     z-index: 100;
     
@@ -45,10 +45,10 @@
     overflow: hidden;
     pointer-events: none;
     
-    .blob {
+  .blob {
       position: absolute;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--role-text-inverse) 10%, transparent);
       filter: blur(60px);
       
       &.blob-1 {
@@ -78,7 +78,7 @@
   .login-card {
     background: var(--background-primary);
     border-radius: var(--radius-lg);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--fx-shadow-lg);
     max-width: 450px;
     width: 100%;
     padding: var(--spacing-3xl);
@@ -129,7 +129,7 @@
           display: block;
           font-size: var(--text-sm);
           font-weight: 600;
-          color: #374151;
+          color: var(--text-secondary);
           margin-bottom: var(--spacing-xs);
         }
         
@@ -152,20 +152,18 @@
             width: 100%;
             padding: var(--spacing-md);
             padding-left: calc(var(--spacing-md) * 3);
-            border: 2px solid #e2e8f0;
+            border: 2px solid var(--border-light);
             border-radius: var(--radius-md);
             font-size: var(--text-sm);
-            background: white;
-            color: #1a202c;
+            background: var(--background-primary);
+            color: var(--text-primary);
             
-            &::placeholder {
-              color: #a0aec0;
-            }
+            &::placeholder { color: var(--text-tertiary); }
             
             &:focus {
               outline: none;
               border-color: var(--primary-500);
-              box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+              box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-500) 15%, transparent);
             }
           }
           
@@ -227,12 +225,12 @@
           filter: brightness(0) invert(1);
         }
         
-        .spinner {
+          .spinner {
           width: 16px;
           height: 16px;
-          border: 2px solid rgba(255, 255, 255, 0.3);
+          border: 2px solid color-mix(in srgb, var(--role-text-inverse) 30%, transparent);
           border-radius: 50%;
-          border-top-color: white;
+          border-top-color: var(--role-text-inverse);
           animation: spin 0.6s linear infinite;
         }
       }

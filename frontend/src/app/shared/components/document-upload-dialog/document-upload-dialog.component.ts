@@ -21,12 +21,13 @@ export class DocumentUploadDialogComponent {
   selectedFile: File | null = null;
   isSubmitting = false;
   
+  // Use semantic CSS variables instead of hardcoded hex colors
   categories = [
-    { value: DocumentCategory.CONTRACT, label: 'Contract', icon: 'description', color: '#FF6B6B' },
-    { value: DocumentCategory.CERTIFICATION, label: 'Certificate', icon: 'verified', color: '#4ECDC4' },
-    { value: DocumentCategory.ID, label: 'ID', icon: 'badge', color: '#95E1D3' },
-    { value: DocumentCategory.TAX, label: 'Tax', icon: 'receipt', color: '#FFE66D' },
-    { value: DocumentCategory.OTHER, label: 'Other', icon: 'folder', color: '#9B9B9B' }
+    { value: DocumentCategory.CONTRACT, label: 'Contract', icon: 'description', color: 'var(--primary-500)' },
+    { value: DocumentCategory.CERTIFICATION, label: 'Certificate', icon: 'verified', color: 'var(--success-600)' },
+    { value: DocumentCategory.ID, label: 'ID', icon: 'badge', color: 'var(--primary-400)' },
+    { value: DocumentCategory.TAX, label: 'Tax', icon: 'receipt', color: 'var(--warning-600)' },
+    { value: DocumentCategory.OTHER, label: 'Other', icon: 'folder', color: 'var(--text-tertiary)' }
   ];
 
   acceptedFormats = [
@@ -83,17 +84,17 @@ export class DocumentUploadDialogComponent {
   getFileColor(): string {
     const ext = this.selectedFile?.name.split('.').pop()?.toLowerCase();
     const colorMap: { [key: string]: string } = {
-      'pdf': '#FF0000',
-      'doc': '#2B579A',
-      'docx': '#2B579A',
-      'xls': '#217346',
-      'xlsx': '#217346',
-      'jpg': '#4285F4',
-      'jpeg': '#4285F4',
-      'png': '#4285F4',
-      'gif': '#4285F4'
+      'pdf': 'var(--danger-600)',
+      'doc': 'var(--primary-600)',
+      'docx': 'var(--primary-600)',
+      'xls': 'var(--success-600)',
+      'xlsx': 'var(--success-600)',
+      'jpg': 'var(--primary-500)',
+      'jpeg': 'var(--primary-500)',
+      'png': 'var(--primary-500)',
+      'gif': 'var(--primary-500)'
     };
-    return colorMap[ext || ''] || '#757575';
+    return colorMap[ext || ''] || 'var(--text-secondary)';
   }
 
   get fileIcon(): string {

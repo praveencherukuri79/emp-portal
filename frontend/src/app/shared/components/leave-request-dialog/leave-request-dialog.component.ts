@@ -29,13 +29,15 @@ export class LeaveRequestDialogComponent {
   form: FormGroup;
   minDate = new Date();
   
+  // Use semantic CSS variables instead of hardcoded hex colors
+  // Tokens referenced from styles.scss (:root)
   leaveTypes = [
-    { value: LeaveType.ANNUAL, label: 'Vacation', icon: 'beach_access', color: '#FF6B6B' },
-    { value: LeaveType.SICK, label: 'Sick', icon: 'healing', color: '#4ECDC4' },
-    { value: LeaveType.PERSONAL, label: 'Personal', icon: 'person', color: '#95E1D3' },
-    { value: LeaveType.UNPAID, label: 'Unpaid', icon: 'money_off', color: '#FFE66D' },
-    { value: LeaveType.MATERNITY, label: 'Maternity', icon: 'child_care', color: '#FFA5D8' },
-    { value: LeaveType.PATERNITY, label: 'Paternity', icon: 'face', color: '#9B9B9B' }
+    { value: LeaveType.ANNUAL, label: 'Vacation', icon: 'beach_access', color: 'var(--primary-500)' },
+    { value: LeaveType.SICK, label: 'Sick', icon: 'healing', color: 'var(--success-600)' },
+    { value: LeaveType.PERSONAL, label: 'Personal', icon: 'person', color: 'var(--primary-400)' },
+    { value: LeaveType.UNPAID, label: 'Unpaid', icon: 'money_off', color: 'var(--warning-600)' },
+    { value: LeaveType.MATERNITY, label: 'Maternity', icon: 'child_care', color: 'var(--primary-600)' },
+    { value: LeaveType.PATERNITY, label: 'Paternity', icon: 'face', color: 'var(--text-tertiary)' }
   ];
 
   constructor() {

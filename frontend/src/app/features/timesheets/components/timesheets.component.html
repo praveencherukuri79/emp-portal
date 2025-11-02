@@ -9,7 +9,7 @@
           <p>Track your work hours and manage time entries</p>
         </div>
       </div>
-      
+
       <div class="header-actions">
         <button mat-icon-button (click)="refreshData()" class="refresh-button" title="Refresh Data">
           <mat-icon>refresh</mat-icon>
@@ -21,82 +21,79 @@
   <!-- Main Content -->
   <div class="timesheets-main" [class.loading]="loading">
     @if (loading) {
-      <div class="loading-container">
-        <mat-spinner diameter="48"></mat-spinner>
-        <p>Loading timesheet data...</p>
-      </div>
+    <div class="loading-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Loading timesheet data...</p>
+    </div>
     } @else {
-      <!-- Week Navigation -->
-      <div class="week-nav" style="display:flex;align-items:center;gap:8px;margin:8px 0 16px;">
-        <button mat-icon-button (click)="prevWeek()" aria-label="Previous week">
-          <mat-icon>chevron_left</mat-icon>
-        </button>
-        <div class="week-range" style="font-weight:500;">
-          {{ currentWeekRange.start | date:'MMM d' }} - {{ currentWeekRange.end | date:'MMM d, yyyy' }}
-        </div>
-        <button mat-icon-button (click)="nextWeek()" aria-label="Next week">
-          <mat-icon>chevron_right</mat-icon>
-        </button>
-        <span class="spacer" style="flex:1 1 auto;"></span>
-        <mat-form-field appearance="outline" style="width: 260px;">
-          <mat-label>Jump to week</mat-label>
-          <mat-select (selectionChange)="jumpToWeek($event.value)">
-            @for (w of lastWeeks; track w.start) {
-              <mat-option [value]="w.start">{{ w.label }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <button mat-stroked-button (click)="goToCurrentWeek()">This Week</button>
+    <!-- Week Navigation -->
+    <div class="week-nav" style="display:flex;align-items:center;gap:8px;margin:8px 0 16px;">
+      <button mat-icon-button (click)="prevWeek()" aria-label="Previous week">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <div class="week-range" style="font-weight:500;">
+        {{ currentWeekRange.start | date:'MMM d' }} - {{ currentWeekRange.end | date:'MMM d, yyyy' }}
       </div>
-
-      <!-- Weekly Hours Entry (single attempt) -->
-      <div class="weekly-entry-card">
-        <div class="weekly-entry-header">
-          <div class="left">
-            <mat-icon>grid_on</mat-icon>
-            <h3>Enter Weekly Hours</h3>
-          </div>
-          <div class="right">
-            <mat-form-field appearance="outline" class="project-field">
-              <mat-label>Project</mat-label>
-              <mat-select [(ngModel)]="selectedProjectId">
-                @for (p of projects; track p.id) {
-                  <mat-option [value]="p.id">{{ p.name }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-            <mat-slide-toggle [(ngModel)]="billable">Billable</mat-slide-toggle>
-          </div>
-        </div>
-
-        <div class="weekly-grid">
-          @for (day of weekDays; track day.dateString) {
-            <div class="day-cell">
-              <label>{{ day.dayName }}</label>
-    <input type="number"
-                     min="0" max="24" step="0.25"
-                     [(ngModel)]="weekHours[day.dateString]"
-                     class="hours-input"
-      [attr.aria-label]="'Hours for ' + day.dayName" />
-            </div>
+      <button mat-icon-button (click)="nextWeek()" aria-label="Next week">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      <span class="spacer" style="flex:1 1 auto;"></span>
+      <mat-form-field appearance="outline" style="width: 260px;">
+        <mat-label>Jump to week</mat-label>
+        <mat-select (selectionChange)="jumpToWeek($event.value)">
+          @for (w of lastWeeks; track w.start) {
+          <mat-option [value]="w.start">{{ w.label }}</mat-option>
           }
-        </div>
+        </mat-select>
+      </mat-form-field>
+      <button mat-stroked-button (click)="goToCurrentWeek()">This Week</button>
+    </div>
 
-        <div class="weekly-entry-footer">
-          <mat-form-field appearance="outline" class="desc-field">
-            <mat-label>Description (optional)</mat-label>
-            <input matInput [(ngModel)]="description" maxlength="140" />
+    <!-- Weekly Hours Entry (single attempt) -->
+    <div class="weekly-entry-card">
+      <div class="weekly-entry-header">
+        <div class="left">
+          <mat-icon>grid_on</mat-icon>
+          <h3>Enter Weekly Hours</h3>
+        </div>
+        <div class="right">
+          <mat-form-field appearance="outline" class="project-field">
+            <mat-label>Project</mat-label>
+            <mat-select [(ngModel)]="selectedProjectId">
+              @for (p of projects; track p.id) {
+              <mat-option [value]="p.id">{{ p.name }}</mat-option>
+              }
+            </mat-select>
           </mat-form-field>
-          <div class="spacer"></div>
-          <div class="total">Total: <strong>{{ weekTotal() | number:'1.2-2' }}</strong> hrs</div>
-          <button mat-raised-button color="primary" (click)="saveWeekHours()" [disabled]="submittingWeek">
-            @if (submittingWeek) { <mat-spinner diameter="16"></mat-spinner> } @else { <mat-icon>save</mat-icon> }
-            Save Week
-          </button>
+          <mat-slide-toggle [(ngModel)]="billable">Billable</mat-slide-toggle>
         </div>
       </div>
 
-      <!-- All bottom sections removed to keep a focused weekly UI -->
+      <div class="weekly-grid">
+        @for (day of weekDays; track day.dateString) {
+        <div class="day-cell">
+          <label>{{ day.dayName }}</label>
+          <input type="number" min="0" max="24" step="0.25" [(ngModel)]="weekHours[day.dateString]" class="hours-input"
+            [attr.aria-label]="'Hours for ' + day.dayName" />
+        </div>
+        }
+      </div>
+
+      <div class="weekly-entry-footer">
+        <mat-form-field appearance="outline" class="desc-field">
+          <mat-label>Description (optional)</mat-label>
+          <input matInput [(ngModel)]="description" maxlength="140" />
+        </mat-form-field>
+        <div class="spacer"></div>
+        <div class="total">Total: <strong>{{ weekTotal() | number:'1.2-2' }}</strong> hrs</div>
+        <button mat-raised-button color="primary" (click)="saveWeekHours()" [disabled]="submittingWeek">
+          @if (submittingWeek) { <mat-spinner diameter="16"></mat-spinner> } @else { <mat-icon>save</mat-icon> }
+          Save Week
+        </button>
+      </div>
+    </div>
+
+    <!-- All bottom sections removed to keep a focused weekly UI -->
     }
   </div>
 </div>
